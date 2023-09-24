@@ -1,0 +1,3 @@
+weights/wav2lip_gan.pth
+weights/yolov8n-face.pt
+weights/onnx_dereverb_By_FoxJoy/vocals.onnx

@@ -1,0 +1,5 @@
+{
+    "YOLO_WEIGHTS_URL": "https://github.com/akanametov/yolov8-face/releases/download/v0.0.0/yolov8n-face.pt",
+    "LANGUAGES_URL": "https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html",
+    "DET_TRESH": 0.3
+}
