@@ -54,13 +54,13 @@ def translate(video_filename, output_language, output_filename):
     # Splitting audio to speech and noise
     outputs = dereverb.split(video_params['audio'])
     # Splitting voice audio to chunks by silence
-    #chunks = split_audio_on_silence(outputs['voice_file'], silence_thresh=-40)
-    chunk_audio = AudioSegment.from_file(outputs['voice_file'], format='wav')
-    chunks = [{
-        'start': 0,
-        'end': chunk_audio.duration_seconds * 1000,
-        'filename': outputs['voice_file']
-    }]
+    chunks = split_audio_on_silence(outputs['voice_file'], silence_thresh=-60)
+    #chunk_audio = AudioSegment.from_file(outputs['voice_file'], format='wav')
+    #chunks = [{
+    #    'start': 0,
+    #    'end': chunk_audio.duration_seconds * 1000,
+    #    'filename': outputs['voice_file']
+    #}]
 
     updates = []
 
