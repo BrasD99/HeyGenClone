@@ -1,15 +1,14 @@
 from ultralytics import YOLO
 import os
-import requests
+#import requests
 
 class FaceDetector:
-    def __init__(self, config):
-        weights_url = config["YOLO_WEIGHTS_URL"]
-        yolo_weights_filename = os.path.join('weights', os.path.basename(weights_url))
-        if not os.path.exists(yolo_weights_filename):
-            response = requests.get(weights_url)
-            with open(yolo_weights_filename, "wb") as file:
-                file.write(response.content)
+    def __init__(self):
+        yolo_weights_filename = os.path.join('weights', 'yolov8n-face.pt')
+        #if not os.path.exists(yolo_weights_filename):
+        #    response = requests.get(weights_url)
+        #    with open(yolo_weights_filename, "wb") as file:
+        #        file.write(response.content)
         self.model = YOLO(yolo_weights_filename)
 
     def detect(self, frame, face_det_tresh):

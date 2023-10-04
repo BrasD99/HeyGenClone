@@ -19,7 +19,7 @@ from tqdm import tqdm
 
 class ScenePreprocessor:
     def __init__(self, config, scenes_batch_num=2):
-        self.face_detector = FaceDetector(config)
+        self.face_detector = FaceDetector()
         self.dereverb = MDXNetDereverb(15)
         self.temp_manager = TempFileManager()
         self.dist_tresh = 0.2
