@@ -14,8 +14,9 @@
   ```
   pip install -r requirements.txt
   ```
-- In config.json file change HF_TOKEN argument. It is your HuggingFace token. Visit https://hf.co/pyannote/speaker-diarization, https://hf.co/pyannote/segmentation and accept user conditions
-- Download weights from https://drive.google.com/file/d/1e35OvOlWVNndkx0Gv7zc5emwnX7t3Oc4/view?usp=sharing, unzip downloaded file into <strong>weights</strong> folder
+- In config.json file change HF_TOKEN argument. It is your HuggingFace token. Visit [speaker-diarization](https://hf.co/pyannote/speaker-diarization), [segmentation](https://hf.co/pyannote/segmentation) and accept user conditions
+- Download weights from [drive](https://drive.google.com/file/d/1e35OvOlWVNndkx0Gv7zc5emwnX7t3Oc4/view?usp=sharing), unzip downloaded file into <strong>weights</strong> folder
+- Install ffmpeg
 
 ## Usage
 At the root of the project there is a translate script that translates the movie you set.
@@ -23,10 +24,18 @@ At the root of the project there is a translate script that translates the movie
 python translate.py video_filename output_language -o output_filename
 ```
 
+## How it works
+
 ## Conversion results
 | Src lang (detected) | Dst lang | Src video | Final video |
 |     :---:      |     :---:      |     :---:     |     :---:      |
 | 🇬🇧   | 🇷🇺     | [![Watch the video](https://i.ibb.co/KD2KKnj/en.jpg)](https://youtu.be/eGFLPAQAC2Y)    | [![Watch the video](https://i.ibb.co/cbwCy8F/ru.jpg)](https://youtu.be/L2YTmfIr7aI)    |
 
+## To-Do List
+- [ ] Fully GPU support
+- [ ] Multithreading support (optimizations)
+- [ ] Detecting talking faces (improvement)
 
-
+## Other
+- Tested on macOS
+- :warning: The project is under development! :warning:
