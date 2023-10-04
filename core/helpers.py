@@ -1,30 +1,10 @@
 import json
 import subprocess
-import os
-import tempfile
 import cv2
-from moviepy.video.io.VideoFileClip import VideoFileClip
 from core.temp_manager import TempFileManager
+from pydub import AudioSegment
+from collections import Counter
 
-def read_config(file='config.json'):
-    with open(file, 'r') as f:
-        return json.load(f)
-
-def read_video(filename):
-    clip = VideoFileClip(filename)
-    frames = []
-    for frame in clip.iter_frames():
-        frames.append(frame)
-    
-    temp_manager = TempFileManager()
-    temp_file = temp_manager.create_temp_file(suffix='.wav').name
-    clip.audio.write_audiofile(temp_file, codec='pcm_s16le')
-
-    return {
-        'fps': clip.fps,
-        'frames': frames,
-        'audio': temp_file
-    }
 
 def get_duration(filename):
     command = f'ffprobe -i {filename} -show_entries format=duration -v quiet -print_format json'
@@ -38,18 +18,14 @@ def format_duration(duration):
     milliseconds = int((duration - int(duration)) * 1000)
     return f'{hours:02d}:{minutes:02d}:{seconds:02d}.{milliseconds:03d}'
 
-def create_temp_file(ext):
-    temp, filename = tempfile.mkstemp()
-    os.close(temp)
-    return f'{filename}.{ext}'
-
 def merge(audio_filename, avi_filename, out_filename):
     audio_duration = get_duration(audio_filename)
     video_duration = get_duration(avi_filename)
     duration = format_duration(video_duration)
 
     if audio_duration > video_duration:
-        temp_wav = create_temp_file('wav')
+        temp_manager = TempFileManager()
+        temp_wav = temp_manager.create_temp_file(suffix='.wav').name
         command = f'ffmpeg -i {audio_filename} -ss 00:00:00 -to {duration} -c copy {temp_wav}'
         subprocess.call(command, shell=True)
         audio_filename = temp_wav
@@ -62,8 +38,10 @@ def merge(audio_filename, avi_filename, out_filename):
     subprocess.call(command, shell=True)
 
 def to_avi(frames, fps):
-    temp_result_avi = create_temp_file('avi')
-    frame_h, frame_w = frames[0]['frame'].shape[:-1]
+    temp_manager = TempFileManager()
+    temp_result_avi = temp_manager.create_temp_file(suffix='.avi').name
+    first_frame = next(iter(frames))
+    frame_h, frame_w = frames[first_frame]['frame'].shape[:-1]
 
     out = cv2.VideoWriter(
         temp_result_avi, cv2.VideoWriter_fourcc(*'DIVX'), fps, (frame_w, frame_h)
@@ -76,21 +54,56 @@ def to_avi(frames, fps):
 
     return temp_result_avi
 
-def to_extended_frames(frames, face_detector, det_tresh):
+def find_person_id(frame_id, speakers, fps):
+    for speaker in speakers:
+        if 'id' in speaker:
+            if int(speaker['start'] * fps) <= frame_id and int(speaker['end'] * fps) >= frame_id:
+                return speaker['id']
+    return None
+
+def to_extended_frames(frames, speakers, fps, get_face_on_frame):
     extended_frames = dict()
 
-    for frame_id, frame in enumerate(frames):
+    for frame_id, frame_dict in frames.items():
+        person_id = find_person_id(frame_id, speakers, fps)
         extended_frames[frame_id] = {
-            'frame': frame,
+            'frame': frame_dict['frame'],
             'has_face': False
         }
-        faces = face_detector.detect(frame, det_tresh)
-        if faces:
-            face, coords = faces[0]
-            extended_frames[frame_id]['face'] = face
-            extended_frames[frame_id]['has_face'] = True
-            extended_frames[frame_id]['c'] = coords
+        if person_id:
+            face_dict = get_face_on_frame(person_id, frame_id)
+            if face_dict:
+                extended_frames[frame_id]['has_face'] = True
+                extended_frames[frame_id]['face'] = face_dict['face']
+                extended_frames[frame_id]['bbox'] = face_dict['bbox']
+            
     return extended_frames
+
+def find_speaker(groups):
+    if groups:
+        counter = Counter(groups)
+        return counter.most_common(1)[0][0]
+    return None
+
+def merge_voices(transcriptions, voice_audio):
+    speakers_dict = dict()
+
+    for transcription in transcriptions:
+        if 'id' in transcription:
+            if not transcription['id'] in speakers_dict:
+                speakers_dict[transcription['id']] = AudioSegment.silent(duration=0)
+            sub_voice = voice_audio[transcription['start'] * 1000: transcription['end'] * 1000]
+            speakers_dict[transcription['id']] += sub_voice
+        
+    return speakers_dict
+
+def get_timestaps(words):
+    if words:
+        first_word = words[0]
+        last_word = words[-1]
+        return first_word['start'], last_word['end']
+    else:
+        0.0, 0.0
 
 def to_segments(updates, audio_duration):
     segments = []

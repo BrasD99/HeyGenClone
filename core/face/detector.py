@@ -13,7 +13,7 @@ class FaceDetector:
         self.model = YOLO(yolo_weights_filename)
 
     def detect(self, frame, face_det_tresh):
-        outputs = self.model(frame)
+        outputs = self.model(frame, verbose=False)
         faces = []
         for box in outputs[0].boxes:
             if float(box.conf) >= face_det_tresh:

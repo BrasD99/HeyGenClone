@@ -47,7 +47,7 @@ class LipSync:
     
     def load_model(self, checkpoint_path):
         model = Wav2Lip()
-        print("Load checkpoint from: {}".format(checkpoint_path))
+        #print("Load checkpoint from: {}".format(checkpoint_path))
         checkpoint = self._load(checkpoint_path)
         s = checkpoint["state_dict"]
         new_s = {}
@@ -76,7 +76,7 @@ class LipSync:
 
             if frames_dict[idx]['has_face']:
                 face = frames_dict[idx]['face'].copy()
-                coords = frames_dict[idx]['c']
+                coords = frames_dict[idx]['bbox']
                 face = cv2.resize(face, (self.img_size, self.img_size))
                 img_batch.append(face)
                 coords_batch.append(coords)
@@ -110,7 +110,7 @@ class LipSync:
     def sync(self, frames_dict, audio_file, fps):
         wav = load_wav(audio_file, 16000)
         mel = melspectrogram(wav)
-        print(mel.shape)
+        #print(mel.shape)
 
         if np.isnan(mel.reshape(-1)).sum() > 0:
             raise ValueError(
@@ -128,7 +128,7 @@ class LipSync:
             mel_chunks.append(mel[:, start_idx: start_idx + self.mel_step_size])
             i += 1
         
-        print("Length of mel chunks: {}".format(len(mel_chunks)))
+        #print("Length of mel chunks: {}".format(len(mel_chunks)))
 
         gen = self.datagen(frames_dict, mel_chunks)
 
