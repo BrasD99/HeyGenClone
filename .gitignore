@@ -2,6 +2,7 @@ weights/wav2lip_gan.pth
 weights/yolov8n-face.pt
 weights/onnx_dereverb_By_FoxJoy/vocals.onnx
 weights/pretrain_TalkSet.model
+pretrained_models/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
