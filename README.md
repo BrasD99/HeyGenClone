@@ -11,7 +11,7 @@
 ## Installation
 - Clone this repo
 - In config.json file change HF_TOKEN argument. It is your HuggingFace token. Visit https://hf.co/pyannote/speaker-diarization, https://hf.co/pyannote/segmentation and accept user conditions
-- Download weights from _, create <strong>weights</strong> folder and unzip downloaded file into it
+- Download weights from https://drive.google.com/file/d/1e35OvOlWVNndkx0Gv7zc5emwnX7t3Oc4/view?usp=sharing, unzip downloaded file into <strong>weights</strong> folder
 
 ## Usage
 At the root of the project there is a translate script that translates the movie you set.
