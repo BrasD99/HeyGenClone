@@ -10,6 +10,10 @@
 
 ## Installation
 - Clone this repo
+- Install requirements:
+  ```
+  pip install -r requirements.txt
+  ```
 - In config.json file change HF_TOKEN argument. It is your HuggingFace token. Visit https://hf.co/pyannote/speaker-diarization, https://hf.co/pyannote/segmentation and accept user conditions
 - Download weights from https://drive.google.com/file/d/1e35OvOlWVNndkx0Gv7zc5emwnX7t3Oc4/view?usp=sharing, unzip downloaded file into <strong>weights</strong> folder
 
