@@ -28,6 +28,5 @@ torch==2.0.1
 torchaudio==2.0.2
 tqdm==4.65.0
 transformers==4.33.2
-TTS==0.15.6
 TTS==0.17.6
 ultralytics==8.0.147
