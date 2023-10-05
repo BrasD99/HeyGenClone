@@ -23,14 +23,8 @@ class ScenePreprocessor:
         self.dereverb = MDXNetDereverb(15)
         self.temp_manager = TempFileManager()
         self.dist_tresh = config['DIST_TRESH']
-        self.db_path = 'scenes'
         self.face_det_tresh = config['DET_TRESH']
-
-        if os.path.exists(self.db_path):
-            shutil.rmtree(self.db_path)
-        os.mkdir(self.db_path)
-
-        self.conn = self.create_db('dump')
+        self.conn = self.create_db(config['DB_NAME'])
 
     def __call__(self, clip, video_file_path, voice_segments):
         scenes = self.detect_scenes(video_file_path)
@@ -86,8 +80,11 @@ class ScenePreprocessor:
             output.append(row[0])
         return output
     
-    def create_db(self, db_key):
-        conn = sqlite3.connect(os.path.join(self.db_path, f'{db_key}.db'))
+    def create_db(self, db_name):
+        if os.path.exists(db_name):
+            os.remove(db_name)
+        
+        conn = sqlite3.connect(db_name)
 
         conn.execute('''CREATE TABLE IF NOT EXISTS persons
                 (person_id TEXT PRIMARY KEY)''')
