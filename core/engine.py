@@ -42,7 +42,7 @@ class Engine:
         self.dereverb = MDXNetDereverb(15)
     
     def __call__(self, video_file_path, output_file_path):
-        # [Step 1] Reading the video, getiing audio (voice + noise), as well as the text of the voice -------
+        # [Step 1] Reading the video, getting audio (voice + noise), as well as the text of the voice -------
         orig_clip = VideoFileClip(video_file_path, verbose=False)
         original_audio_file = self.temp_manager.create_temp_file(suffix='.wav').name
         orig_clip.audio.write_audiofile(original_audio_file, codec='pcm_s16le', verbose=False, logger=None)
