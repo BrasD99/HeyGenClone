@@ -51,7 +51,7 @@ def melspectrogram(wav):
 
 def _lws_processor():
     import lws
-    return lws.lws(hp['n_fft'], get_hop_size(), fftsize=hp['win_size'], mode="speech")
+    return lws.lws(hp['n_fft'], get_hop_size(), fftsize=hp['win_size'], mode='speech')
 
 def _stft(y):
     if hp['use_lws']:
@@ -62,8 +62,9 @@ def _stft(y):
 ##########################################################
 #Those are only correct when using lws!!! (This was messing with Wavenet quality for a long time!)
 def num_frames(length, fsize, fshift):
-    """Compute number of time frames of spectrogram
-    """
+    '''
+    Compute number of time frames of spectrogram
+    '''
     pad = (fsize - fshift)
     if length % fshift == 0:
         M = (length + pad * 2 - fsize) // fshift + 1
@@ -73,8 +74,9 @@ def num_frames(length, fsize, fshift):
 
 
 def pad_lr(x, fsize, fshift):
-    """Compute left and right padding
-    """
+    '''
+    Compute left and right padding
+    '''
     M = num_frames(len(x), fsize, fshift)
     pad = (fsize - fshift)
     T = len(x) + 2 * pad

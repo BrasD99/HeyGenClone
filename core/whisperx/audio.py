@@ -24,7 +24,7 @@ TOKENS_PER_SECOND = exact_div(SAMPLE_RATE, N_SAMPLES_PER_TOKEN)  # 20ms per audi
 
 
 def load_audio(file: str, sr: int = SAMPLE_RATE):
-    """
+    '''
     Open an audio file and read as mono waveform, resampling as necessary
 
     Parameters
@@ -38,25 +38,25 @@ def load_audio(file: str, sr: int = SAMPLE_RATE):
     Returns
     -------
     A NumPy array containing the audio waveform, in float32 dtype.
-    """
+    '''
     try:
         # This launches a subprocess to decode audio while down-mixing and resampling as necessary.
         # Requires the ffmpeg CLI and `ffmpeg-python` package to be installed.
         out, _ = (
             ffmpeg.input(file, threads=0)
-            .output("-", format="s16le", acodec="pcm_s16le", ac=1, ar=sr)
-            .run(cmd=["ffmpeg", "-nostdin"], capture_stdout=True, capture_stderr=True)
+            .output('-', format='s16le', acodec='pcm_s16le', ac=1, ar=sr)
+            .run(cmd=['ffmpeg', '-nostdin'], capture_stdout=True, capture_stderr=True)
         )
     except ffmpeg.Error as e:
-        raise RuntimeError(f"Failed to load audio: {e.stderr.decode()}") from e
+        raise RuntimeError(f'Failed to load audio: {e.stderr.decode()}') from e
 
     return np.frombuffer(out, np.int16).flatten().astype(np.float32) / 32768.0
 
 
 def pad_or_trim(array, length: int = N_SAMPLES, *, axis: int = -1):
-    """
+    '''
     Pad or trim the audio array to N_SAMPLES, as expected by the encoder.
-    """
+    '''
     if torch.is_tensor(array):
         if array.shape[axis] > length:
             array = array.index_select(
@@ -81,20 +81,20 @@ def pad_or_trim(array, length: int = N_SAMPLES, *, axis: int = -1):
 
 @lru_cache(maxsize=None)
 def mel_filters(device, n_mels: int = N_MELS) -> torch.Tensor:
-    """
+    '''
     load the mel filterbank matrix for projecting STFT into a Mel spectrogram.
     Allows decoupling librosa dependency; saved using:
 
         np.savez_compressed(
-            "mel_filters.npz",
+            'mel_filters.npz',
             mel_80=librosa.filters.mel(sr=16000, n_fft=400, n_mels=80),
         )
-    """
-    assert n_mels == 80, f"Unsupported n_mels: {n_mels}"
+    '''
+    assert n_mels == 80, f'Unsupported n_mels: {n_mels}'
     with np.load(
-        os.path.join(os.path.dirname(__file__), "assets", "mel_filters.npz")
+        os.path.join(os.path.dirname(__file__), 'assets', 'mel_filters.npz')
     ) as f:
-        return torch.from_numpy(f[f"mel_{n_mels}"]).to(device)
+        return torch.from_numpy(f[f'mel_{n_mels}']).to(device)
 
 
 def log_mel_spectrogram(
@@ -103,7 +103,7 @@ def log_mel_spectrogram(
     padding: int = 0,
     device: Optional[Union[str, torch.device]] = None,
 ):
-    """
+    '''
     Compute the log-Mel spectrogram of
 
     Parameters
@@ -124,7 +124,7 @@ def log_mel_spectrogram(
     -------
     torch.Tensor, shape = (80, n_frames)
         A Tensor that contains the Mel spectrogram
-    """
+    '''
     if not torch.is_tensor(audio):
         if isinstance(audio, str):
             audio = load_audio(audio)

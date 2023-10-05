@@ -23,9 +23,9 @@ class Conv_TDF_net_trim:
             device
         )
         self.target_name = target_name
-        self.blender = "blender" in model_name
+        self.blender = 'blender' in model_name
 
-        out_c = self.dim_c * 4 if target_name == "*" else self.dim_c
+        out_c = self.dim_c * 4 if target_name == '*' else self.dim_c
         self.freq_pad = torch.zeros(
             [1, out_c, self.n_bins - self.dim_f, self.dim_t]
         ).to(device)
@@ -56,7 +56,7 @@ class Conv_TDF_net_trim:
             else freq_pad
         )
         x = torch.cat([x, freq_pad], -2)
-        c = 4 * 2 if self.target_name == "*" else 2
+        c = 4 * 2 if self.target_name == '*' else 2
         x = x.reshape([-1, c, 2, self.n_bins, self.dim_t]).reshape(
             [-1, 2, self.n_bins, self.dim_t]
         )
@@ -71,8 +71,8 @@ class Conv_TDF_net_trim:
 def get_models(device, dim_f, dim_t, n_fft):
     return Conv_TDF_net_trim(
         device=device,
-        model_name="Conv-TDF",
-        target_name="vocals",
+        model_name='Conv-TDF',
+        target_name='vocals',
         L=11,
         dim_f=dim_f,
         dim_t=dim_t,
@@ -88,16 +88,16 @@ class Predictor:
             device=self.device, dim_f=args.dim_f, dim_t=args.dim_t, n_fft=args.n_fft
         )
         self.model = ort.InferenceSession(
-            os.path.join(args.onnx, self.model_.target_name + ".onnx"),
-            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+            os.path.join(args.onnx, self.model_.target_name + '.onnx'),
+            providers=['CUDAExecutionProvider', 'CPUExecutionProvider'],
         )
-        print("onnx load done")
+        print('onnx load done')
 
     def demix(self, mix):
         samples = mix.shape[-1]
         margin = self.args.margin
         chunk_size = self.args.chunks * 44100
-        assert not margin == 0, "margin cannot be zero!"
+        assert not margin == 0, 'margin cannot be zero!'
         if margin > chunk_size:
             margin = chunk_size
 
@@ -120,17 +120,17 @@ class Predictor:
                 break
 
         sources = self.demix_base(segmented_mix, margin_size=margin)
-        """
+        '''
         mix:(2,big_sample)
         segmented_mix:offset->(2,small_sample)
         sources:(1,2,big_sample)
-        """
+        '''
         return sources
 
     def demix_base(self, mixes, margin_size):
         chunked_sources = []
         progress_bar = tqdm(total=len(mixes))
-        progress_bar.set_description("Processing")
+        progress_bar.set_description('Processing')
         for mix in mixes:
             cmix = mixes[mix]
             sources = []
@@ -156,14 +156,14 @@ class Predictor:
                     input_data_1 = -spek.cuda().numpy() if self.device.type == 'cuda' else -spek.cpu().numpy()
                     input_data_2 = spek.cuda().numpy() if self.device.type == 'cuda' else spek.cpu().numpy()
                     spec_pred = (
-                            -_ort.run(None, {"input": input_data_1})[0] * 0.5
-                            + _ort.run(None, {"input": input_data_2})[0] * 0.5
+                            -_ort.run(None, {'input': input_data_1})[0] * 0.5
+                            + _ort.run(None, {'input': input_data_2})[0] * 0.5
                     )
                     tar_waves = model.istft(torch.tensor(spec_pred))
                 else:
                     input_data = spek.cuda().numpy() if self.device.type == 'cuda' else spek.cpu().numpy()
                     tar_waves = model.istft(
-                        torch.tensor(_ort.run(None, {"input": input_data})[0])
+                        torch.tensor(_ort.run(None, {'input': input_data})[0])
                     )
                 tar_signal = (
                     tar_waves[:, :, trim:-trim]
@@ -212,7 +212,7 @@ class MDXNetDereverb:
         if not os.path.exists(self.onnx):
             raise Exception('No weights found')
         self.shifts = 10
-        self.mixing = "min_mag"
+        self.mixing = 'min_mag'
         self.chunks = chunks
         self.margin = 44100
         self.dim_t = 9

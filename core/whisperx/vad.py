@@ -15,22 +15,22 @@ from tqdm import tqdm
 
 from .diarize import Segment as SegmentX
 
-VAD_SEGMENTATION_URL = "https://whisperx.s3.eu-west-2.amazonaws.com/model_weights/segmentation/0b5b3216d60a2d32fc086b47ea8c67589aaeb26b7e07fcbe620d6d0b83e209ea/pytorch_model.bin"
+VAD_SEGMENTATION_URL = 'https://whisperx.s3.eu-west-2.amazonaws.com/model_weights/segmentation/0b5b3216d60a2d32fc086b47ea8c67589aaeb26b7e07fcbe620d6d0b83e209ea/pytorch_model.bin'
 
 def load_vad_model(device, vad_onset=0.500, vad_offset=0.363, use_auth_token=None, model_fp=None):
     model_dir = torch.hub._get_torch_home()
     os.makedirs(model_dir, exist_ok = True)
     if model_fp is None:
-        model_fp = os.path.join(model_dir, "whisperx-vad-segmentation.bin")
+        model_fp = os.path.join(model_dir, 'whisperx-vad-segmentation.bin')
     if os.path.exists(model_fp) and not os.path.isfile(model_fp):
-        raise RuntimeError(f"{model_fp} exists and is not a regular file")
+        raise RuntimeError(f'{model_fp} exists and is not a regular file')
 
     if not os.path.isfile(model_fp):
-        with urllib.request.urlopen(VAD_SEGMENTATION_URL) as source, open(model_fp, "wb") as output:
+        with urllib.request.urlopen(VAD_SEGMENTATION_URL) as source, open(model_fp, 'wb') as output:
             with tqdm(
-                total=int(source.info().get("Content-Length")),
+                total=int(source.info().get('Content-Length')),
                 ncols=80,
-                unit="iB",
+                unit='iB',
                 unit_scale=True,
                 unit_divisor=1024,
             ) as loop:
@@ -42,24 +42,24 @@ def load_vad_model(device, vad_onset=0.500, vad_offset=0.363, use_auth_token=Non
                     output.write(buffer)
                     loop.update(len(buffer))
 
-    model_bytes = open(model_fp, "rb").read()
+    model_bytes = open(model_fp, 'rb').read()
     if hashlib.sha256(model_bytes).hexdigest() != VAD_SEGMENTATION_URL.split('/')[-2]:
         raise RuntimeError(
-            "Model has been downloaded but the SHA256 checksum does not not match. Please retry loading the model."
+            'Model has been downloaded but the SHA256 checksum does not not match. Please retry loading the model.'
         )
 
     vad_model = Model.from_pretrained(model_fp, use_auth_token=use_auth_token)
-    hyperparameters = {"onset": vad_onset, 
-                    "offset": vad_offset,
-                    "min_duration_on": 0.1,
-                    "min_duration_off": 0.1}
+    hyperparameters = {'onset': vad_onset, 
+                    'offset': vad_offset,
+                    'min_duration_on': 0.1,
+                    'min_duration_off': 0.1}
     vad_pipeline = VoiceActivitySegmentation(segmentation=vad_model, device=torch.device(device))
     vad_pipeline.instantiate(hyperparameters)
 
     return vad_pipeline
 
 class Binarize:
-    """Binarize detection scores using hysteresis thresholding, with min-cut operation
+    '''Binarize detection scores using hysteresis thresholding, with min-cut operation
     to ensure not segments are longer than max_duration.
 
     Parameters
@@ -82,14 +82,14 @@ class Binarize:
         The maximum length of an active segment, divides segment at timestamp with lowest score.
     Reference
     ---------
-    Gregory Gelly and Jean-Luc Gauvain. "Minimum Word Error Training of
-    RNN-based Voice Activity Detection", InterSpeech 2015.
+    Gregory Gelly and Jean-Luc Gauvain. 'Minimum Word Error Training of
+    RNN-based Voice Activity Detection', InterSpeech 2015.
 
     Modified by Max Bain to include WhisperX's min-cut operation 
     https://arxiv.org/abs/2303.00747
     
     Pyannote-audio
-    """
+    '''
 
     def __init__(
         self,
@@ -116,7 +116,7 @@ class Binarize:
         self.max_duration = max_duration
 
     def __call__(self, scores: SlidingWindowFeature) -> Annotation:
-        """Binarize detection scores
+        '''Binarize detection scores
         Parameters
         ----------
         scores : SlidingWindowFeature
@@ -125,7 +125,7 @@ class Binarize:
         -------
         active : Annotation
             Binarized scores.
-        """
+        '''
 
         num_frames, num_classes = scores.data.shape
         frames = scores.sliding_window
@@ -181,8 +181,8 @@ class Binarize:
         # because of padding, some active regions might be overlapping: merge them.
         # also: fill same speaker gaps shorter than min_duration_off
         if self.pad_offset > 0.0 or self.pad_onset > 0.0 or self.min_duration_off > 0.0:
-            if self.max_duration < float("inf"):
-                raise NotImplementedError(f"This would break current max_duration param")
+            if self.max_duration < float('inf'):
+                raise NotImplementedError(f'This would break current max_duration param')
             active = active.support(collar=self.min_duration_off)
 
         # remove tracks shorter than min_duration_on
@@ -197,7 +197,7 @@ class Binarize:
 class VoiceActivitySegmentation(VoiceActivityDetection):
     def __init__(
         self,
-        segmentation: PipelineModel = "pyannote/segmentation",
+        segmentation: PipelineModel = 'pyannote/segmentation',
         fscore: bool = False,
         use_auth_token: Union[Text, None] = None,
         **inference_kwargs,
@@ -206,7 +206,7 @@ class VoiceActivitySegmentation(VoiceActivityDetection):
         super().__init__(segmentation=segmentation, fscore=fscore, use_auth_token=use_auth_token, **inference_kwargs)
 
     def apply(self, file: AudioFile, hook: Optional[Callable] = None) -> Annotation:
-        """Apply voice activity detection
+        '''Apply voice activity detection
 
         Parameters
         ----------
@@ -214,13 +214,13 @@ class VoiceActivitySegmentation(VoiceActivityDetection):
             Processed file.
         hook : callable, optional
             Hook called after each major step of the pipeline with the following
-            signature: hook("step_name", step_artefact, file=file)
+            signature: hook('step_name', step_artefact, file=file)
 
         Returns
         -------
         speech : Annotation
             Speech regions.
-        """
+        '''
 
         # setup hook (e.g. for debugging purposes)
         hook = self.setup_hook(file, hook=hook)
@@ -261,9 +261,9 @@ def merge_vad(vad_arr, pad_onset=0.0, pad_offset=0.0, min_duration_off=0.0, min_
     return active_segs
 
 def merge_chunks(segments, chunk_size):
-    """
+    '''
     Merge operation described in paper
-    """
+    '''
     curr_end = 0
     merged_segments = []
     seg_idxs = []
@@ -274,21 +274,21 @@ def merge_chunks(segments, chunk_size):
     segments = binarize(segments)
     segments_list = []
     for speech_turn in segments.get_timeline():
-        segments_list.append(SegmentX(speech_turn.start, speech_turn.end, "UNKNOWN"))
+        segments_list.append(SegmentX(speech_turn.start, speech_turn.end, 'UNKNOWN'))
 
     if len(segments_list) == 0:
-        print("No active speech found in audio")
+        print('No active speech found in audio')
         return []
-    # assert segments_list, "segments_list is empty."
+    # assert segments_list, 'segments_list is empty.'
     # Make sur the starting point is the start of the segment.
     curr_start = segments_list[0].start
 
     for seg in segments_list:
         if seg.end - curr_start > chunk_size and curr_end-curr_start > 0:
             merged_segments.append({
-                "start": curr_start,
-                "end": curr_end,
-                "segments": seg_idxs,
+                'start': curr_start,
+                'end': curr_end,
+                'segments': seg_idxs,
             })
             curr_start = seg.start
             seg_idxs = []
@@ -298,8 +298,8 @@ def merge_chunks(segments, chunk_size):
         speaker_idxs.append(seg.speaker)
     # add final
     merged_segments.append({ 
-                "start": curr_start,
-                "end": curr_end,
-                "segments": seg_idxs,
+                'start': curr_start,
+                'end': curr_end,
+                'segments': seg_idxs,
             })    
     return merged_segments

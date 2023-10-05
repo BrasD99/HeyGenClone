@@ -10,7 +10,7 @@ from core.temp_manager import TempFileManager
 def split_on_silence(audio_segment, min_silence_len=1000, silence_thresh=-16, keep_silence=100,
                      seek_step=1):
     def pairwise(iterable):
-        "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+        's -> (s0,s1), (s1,s2), (s2, s3), ...'
         a, b = itertools.tee(iterable)
         next(b, None)
         return zip(a, b)
@@ -77,8 +77,8 @@ def split_audio_on_silence(
     temp_files = []
     temp_manager = TempFileManager()
     for k, segment in enumerate(non_silent_audio):
-        segment_file_name = f"segment_{k + 1}.{output_format}"
-        temp_file = temp_manager.create_temp_file(suffix=f".{output_format}")
+        segment_file_name = f'segment_{k + 1}.{output_format}'
+        temp_file = temp_manager.create_temp_file(suffix=f'.{output_format}')
         segment['audio'].export(temp_file.name, format=output_format)  # Write segment to the temp file
         temp_file.close()  # Close the temp file
         temp_file_name = os.path.join(os.path.dirname(temp_file.name), segment_file_name)
@@ -86,7 +86,7 @@ def split_audio_on_silence(
         # Check if the destination file already exists
         counter = 1
         while os.path.exists(temp_file_name):
-            segment_file_name = f"segment_{k + 1}_{counter}.{output_format}"
+            segment_file_name = f'segment_{k + 1}_{counter}.{output_format}'
             temp_file_name = os.path.join(os.path.dirname(temp_file.name), segment_file_name)
             counter += 1
 
@@ -103,7 +103,7 @@ def speed_change(sound, speed=1.0):
     # Manually override the frame_rate. This tells the computer how many
     # samples to play per second
     sound_with_altered_frame_rate = sound._spawn(sound.raw_data, overrides={
-        "frame_rate": int(sound.frame_rate * speed)
+        'frame_rate': int(sound.frame_rate * speed)
     })
 
     # convert the sound with altered frame rate to a standard frame rate
@@ -140,5 +140,5 @@ def combine_audio(audio_file_1, audio_file_2):
     temp_manager = TempFileManager()
     temp_file = temp_manager.create_temp_file(suffix='.wav').name
 
-    tmpsound.export(temp_file, format="wav") 
+    tmpsound.export(temp_file, format='wav') 
     return temp_file

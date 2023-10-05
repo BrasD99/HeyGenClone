@@ -10,7 +10,7 @@ def normal_round(n):
 
 def format_timestamp(seconds: float, is_vtt: bool = False):
 
-    assert seconds >= 0, "non-negative timestamp expected"
+    assert seconds >= 0, 'non-negative timestamp expected'
     milliseconds = round(seconds * 1000.0)
 
     hours = milliseconds // 3_600_000
@@ -24,9 +24,9 @@ def format_timestamp(seconds: float, is_vtt: bool = False):
 
     separator = '.' if is_vtt else ','
     
-    hours_marker = f"{hours:02d}:"
+    hours_marker = f'{hours:02d}:'
     return (
-        f"{hours_marker}{minutes:02d}:{seconds:02d}{separator}{milliseconds:03d}"
+        f'{hours_marker}{minutes:02d}:{seconds:02d}{separator}{milliseconds:03d}'
     )
 
 
@@ -203,19 +203,19 @@ class SubtitlesProcessor:
     
 
 
-    def save(self, filename="subtitles.srt", advanced_splitting=True):
+    def save(self, filename='subtitles.srt', advanced_splitting=True):
         
         subtitles = self.process_segments(advanced_splitting)
 
         def write_subtitle(file, idx, start_time, end_time, text):
 
-            file.write(f"{idx}\n")
-            file.write(f"{start_time} --> {end_time}\n")
-            file.write(text + "\n\n")
+            file.write(f'{idx}\n')
+            file.write(f'{start_time} --> {end_time}\n')
+            file.write(text + '\n\n')
 
         with open(filename, 'w', encoding='utf-8') as file:
             if self.is_vtt:
-                file.write("WEBVTT\n\n")
+                file.write('WEBVTT\n\n')
             
             if advanced_splitting:
                 for idx, subtitle in enumerate(subtitles, 1):

@@ -73,7 +73,7 @@ class ScenePreprocessor:
         self.conn.close()
     
     def get_persons_on_frame(self, frame_id):
-        cursor = self.conn.execute("SELECT person_id FROM embeddings WHERE frame_id=?", (frame_id,))
+        cursor = self.conn.execute('SELECT person_id FROM embeddings WHERE frame_id=?', (frame_id,))
         rows = cursor.fetchall()
         output = []
         for row in rows:
@@ -96,7 +96,7 @@ class ScenePreprocessor:
         return conn
     
     def get_face_on_frame(self, person_id, frame_id):
-        cursor = self.conn.execute("SELECT face, bbox FROM embeddings WHERE person_id=? AND frame_id=?", (person_id, frame_id))
+        cursor = self.conn.execute('SELECT face, bbox FROM embeddings WHERE person_id=? AND frame_id=?', (person_id, frame_id))
         row = cursor.fetchone()
         if row:
             return {
@@ -108,12 +108,12 @@ class ScenePreprocessor:
     
     def insert_frame(self, frame_id, frame):
         frame_bytes = pickle.dumps(frame)
-        self.conn.execute("INSERT INTO frames (frame_id, frame) VALUES (?, ?)", (frame_id, sqlite3.Binary(frame_bytes)))
+        self.conn.execute('INSERT INTO frames (frame_id, frame) VALUES (?, ?)', (frame_id, sqlite3.Binary(frame_bytes)))
         self.conn.commit()
 
     def get_frames(self):
         frames = dict()
-        cursor = self.conn.execute("SELECT * FROM frames")
+        cursor = self.conn.execute('SELECT * FROM frames')
         rows = cursor.fetchall()
         for row in rows:
             frames[row[0]] = pickle.loads(row[1])
@@ -140,13 +140,13 @@ class ScenePreprocessor:
         return persons_with_embeddings
     
     def get_all_persons(self):
-        cursor = self.conn.execute("SELECT person_id FROM persons")
+        cursor = self.conn.execute('SELECT person_id FROM persons')
         rows = cursor.fetchall()
         persons = [row[0] for row in rows]
         return persons
     
     def get_embeddings(self, person_id):
-        cursor = self.conn.execute("SELECT embedding FROM embeddings WHERE person_id=?", (person_id,))
+        cursor = self.conn.execute('SELECT embedding FROM embeddings WHERE person_id=?', (person_id,))
         rows = cursor.fetchall()
         embeddings = []
         for row in rows:
@@ -157,8 +157,8 @@ class ScenePreprocessor:
         embedding_bytes = pickle.dumps(embedding)
         face_bytes = pickle.dumps(face)
         bbox_bytes = pickle.dumps(bbox)
-        self.conn.execute("INSERT INTO persons (person_id) VALUES (?)", (person_id,))
-        self.conn.execute("INSERT INTO embeddings (person_id, embedding, frame_id, face, bbox) VALUES (?, ?, ?, ?, ?)",
+        self.conn.execute('INSERT INTO persons (person_id) VALUES (?)', (person_id,))
+        self.conn.execute('INSERT INTO embeddings (person_id, embedding, frame_id, face, bbox) VALUES (?, ?, ?, ?, ?)',
                     (person_id, sqlite3.Binary(embedding_bytes), frame_id, sqlite3.Binary(face_bytes), sqlite3.Binary(bbox_bytes)))
         self.conn.commit()
 
@@ -166,7 +166,7 @@ class ScenePreprocessor:
         embedding_bytes = pickle.dumps(embedding)
         face_bytes = pickle.dumps(face)
         bbox_bytes = pickle.dumps(bbox)
-        self.conn.execute("INSERT INTO embeddings (person_id, embedding, frame_id, face, bbox) VALUES (?, ?, ?, ?, ?)",
+        self.conn.execute('INSERT INTO embeddings (person_id, embedding, frame_id, face, bbox) VALUES (?, ?, ?, ?, ?)',
                     (person_id, sqlite3.Binary(embedding_bytes), frame_id, sqlite3.Binary(face_bytes), sqlite3.Binary(bbox_bytes)))
         self.conn.commit()
 

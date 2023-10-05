@@ -47,9 +47,9 @@ class LipSync:
     
     def load_model(self, checkpoint_path):
         model = Wav2Lip()
-        #print("Load checkpoint from: {}".format(checkpoint_path))
+        #print('Load checkpoint from: {}'.format(checkpoint_path))
         checkpoint = self._load(checkpoint_path)
-        s = checkpoint["state_dict"]
+        s = checkpoint['state_dict']
         new_s = {}
         for k, v in s.items():
             new_s[k.replace('module.', '')] = v
@@ -128,7 +128,7 @@ class LipSync:
             mel_chunks.append(mel[:, start_idx: start_idx + self.mel_step_size])
             i += 1
         
-        #print("Length of mel chunks: {}".format(len(mel_chunks)))
+        #print('Length of mel chunks: {}'.format(len(mel_chunks)))
 
         gen = self.datagen(frames_dict, mel_chunks)
 

@@ -79,6 +79,12 @@ def to_extended_frames(frames, speakers, fps, get_face_on_frame):
             
     return extended_frames
 
+def get_voice_segments(speakers):
+    segments = []
+    for speaker in speakers:
+        segments.append((speaker['start'], speaker['end']))
+    return segments
+
 def find_speaker(groups):
     if groups:
         counter = Counter(groups)
