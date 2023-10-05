@@ -44,6 +44,14 @@ At the root of the project there is a translate script that translates the video
 python translate.py video_filename output_language -o output_filename
 ```
 
+I also added a script to overlay the voice on the video with lip sync, which allows you to create a video with a person pronouncing your speech. Сurrently it works for videos with one person.
+- voice_filename - the filename of your speech (.wav)
+- video_filename - the filename of your input video (.mp4)
+- output_filename - the filename of output video (.mp4)
+```
+python speech_changer.py voice_filename video_filename -o output_filename
+```
+
 ## How it works
 1. Detecting scenes ([PySceneDetect](https://github.com/Breakthrough/PySceneDetect))
 2. Face detection ([yolov8-face](https://github.com/akanametov/yolov8-face))
