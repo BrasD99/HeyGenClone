@@ -63,7 +63,7 @@ python speech_changer.py voice_filename video_filename -o output_filename
 8. Lip sync ([lipsync](https://github.com/mowshon/lipsync))
 9. [Need to fix] Search for talking faces, determining what this person is saying
 
-## Conversion results
+## Translate results
 | Destination language | Source video | Output video |
 |     :---:      |     :---:     |     :---:      |
 |🇷🇺 (Russian)     | [![Watch the video](https://i.ibb.co/KD2KKnj/en.jpg)](https://youtu.be/eGFLPAQAC2Y)    | [![Watch the video](https://i.ibb.co/cbwCy8F/ru.jpg)](https://youtu.be/L2YTmfIr7aI)    |
