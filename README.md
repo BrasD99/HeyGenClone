@@ -37,6 +37,9 @@
 
 ## Usage
 At the root of the project there is a translate script that translates the video you set.
+- video_filename - the filename of your input video (.mp4)
+- output_language - the code of the language to be translated into
+- output_filename - the filename of output video (.mp4)
 ```
 python translate.py video_filename output_language -o output_filename
 ```
