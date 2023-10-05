@@ -22,6 +22,15 @@
 - Download weights from [drive](https://drive.google.com/file/d/1e35OvOlWVNndkx0Gv7zc5emwnX7t3Oc4/view?usp=sharing), unzip downloaded file into <strong>weights</strong> folder
 - Install [ffmpeg](https://ffmpeg.org/)
 
+## Configurations (config.json)
+| Key | Description | Can modify |
+|     :---:      |     :---:     |     :---:      |
+|     LANGUAGES_URL      |     Url for getting available languages     |     ❌      |
+|     DET_TRESH      |     Face detection treshtold [0.0:1.0]     |     ✅      |
+|     DIST_TRESH      |     Face embeddings distance treshtold [0.0:1.0]     |     ✅      |
+|     DB_NAME      |     Name of the database for data storage     |     ✅      |
+|     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |     ✅      |
+
 ## Usage
 At the root of the project there is a translate script that translates the movie you set.
 ```
