@@ -36,7 +36,7 @@
 |     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |     ✅      |
 
 ## Usage
-At the root of the project there is a translate script that translates the movie you set.
+At the root of the project there is a translate script that translates the video you set.
 ```
 python translate.py video_filename output_language -o output_filename
 ```
