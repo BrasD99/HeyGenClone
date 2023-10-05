@@ -32,9 +32,11 @@ python translate.py video_filename output_language -o output_filename
 1. Detecting scenes ([PySceneDetect](https://github.com/Breakthrough/PySceneDetect))
 2. Face detection ([yolov8-face](https://github.com/akanametov/yolov8-face))
 3. Reidentification ([deepface](https://github.com/serengil/deepface))
-4. Voice cloning ([TTS](https://github.com/coqui-ai/TTS))
-5. Lip sync ([lipsync](https://github.com/mowshon/lipsync))
-6. [Need to fix] Search for talking faces, determining what this person is saying
+4. Speech enhancement ([MDXNet](https://huggingface.co/freyza/kopirekcover/blob/main/MDXNet.py))
+5. Speakers transcriptions and diarization ([whisperX](https://github.com/m-bain/whisperX))
+6. Voice cloning ([TTS](https://github.com/coqui-ai/TTS))
+7. Lip sync ([lipsync](https://github.com/mowshon/lipsync))
+8. [Need to fix] Search for talking faces, determining what this person is saying
 
 ## Conversion results
 | Destination language | Source video | Output video |
