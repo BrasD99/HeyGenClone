@@ -69,7 +69,7 @@ python speech_changer.py voice_filename video_filename -o output_filename
 |🇷🇺 (Russian)     | [![Watch the video](https://i.ibb.co/KD2KKnj/en.jpg)](https://youtu.be/eGFLPAQAC2Y)    | [![Watch the video](https://i.ibb.co/cbwCy8F/ru.jpg)](https://youtu.be/L2YTmfIr7aI)    |
 
 ## To-Do List
-- [ ] Fully GPU support
+- [x] Fully GPU support
 - [ ] Multithreading support (optimizations)
 - [ ] Detecting talking faces (improvement)
 
