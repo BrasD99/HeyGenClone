@@ -8,6 +8,10 @@
   I am a developer from Moscow 🇷🇺 who devotes his free time to studying new technologies. The project is in an active development phase, but I hope it will help you achieve your goals!
 </p>
 
+<p align="center">
+  <img src="https://i.ibb.co/9H4f46J/logo.png" width="30%" height="auto" />
+</p>
+
 ## Installation
 - Clone this repo
 - Install requirements:
