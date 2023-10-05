@@ -46,7 +46,7 @@ python translate.py video_filename output_language -o output_filename
 |     DET_TRESH      |     Face detection treshtold [0:1]     |     ✅      |
 |     DIST_TRESH      |     Face embeddings distance treshtold [0:1]     |     ✅      |
 |     DB_NAME      |     Name of the database for data storage     |     ✅      |
-|     HF_TOKEN      |     Your HuggingFace token (see Installation)     |     ✅      |
+|     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |     ✅      |
 
 ## Conversion results
 | Destination language | Source video | Output video |
