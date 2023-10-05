@@ -26,8 +26,8 @@
 | Key | Description | Can modify |
 |     :---:      |     :---:     |     :---:      |
 |     LANGUAGES_URL      |     Url for getting available languages     |     ❌      |
-|     DET_TRESH      |     Face detection treshtold [0:1]     |     ✅      |
-|     DIST_TRESH      |     Face embeddings distance treshtold [0:1]     |     ✅      |
+|     DET_TRESH      |     Face detection treshtold [0.0:1.0]     |     ✅      |
+|     DIST_TRESH      |     Face embeddings distance treshtold [0.0:1.0]     |     ✅      |
 |     DB_NAME      |     Name of the database for data storage     |     ✅      |
 |     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |     ✅      |
 
