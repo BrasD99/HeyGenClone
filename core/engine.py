@@ -87,28 +87,32 @@ class Engine:
         updates = []
         for speaker in speakers:
             if 'id' in speaker:
-                merged_voice = merged_voices[speaker['id']]
-                dst_text = self.text_helper.translate(speaker['text'], src_lang=lang, \
-                                                    dst_lang=self.output_language[:-1])
-                merged_wav = self.temp_manager.create_temp_file(suffix='.wav').name
-                merged_voice.export(merged_wav, format='wav')
-                cloned_wav = self.cloner.process(
-                    speaker_wav_filename=merged_wav,
-                    text=dst_text
-                )
+                voice = merged_voices[speaker['id']]
+            else:
+                voice = voice_audio[speaker['start'] * 1000: speaker['end'] * 1000]
+            
+            voice_wav = self.temp_manager.create_temp_file(suffix='.wav').name
+            voice.export(voice_wav, format='wav')
 
-                original_wav = self.temp_manager.create_temp_file(suffix='.wav').name
-                sub_voice = voice_audio[speaker['start'] * 1000: speaker['end'] * 1000]
-                sub_voice.export(original_wav, format='wav')
+            dst_text = self.text_helper.translate(speaker['text'], src_lang=lang, dst_lang=self.output_language[:-1])
 
-                output_wav = speedup_audio(cloned_wav, original_wav)
+            cloned_wav = self.cloner.process(
+                speaker_wav_filename=voice_wav,
+                text=dst_text
+            )
 
-                updates.append({
-                    # In ms
-                    'start': speaker['start'] * 1000,
-                    'end': speaker['end'] * 1000,
-                    'voice': output_wav
-                })
+            sub_voice = voice_audio[speaker['start'] * 1000: speaker['end'] * 1000]
+            sub_voice_wav = self.temp_manager.create_temp_file(suffix='.wav').name
+            sub_voice.export(sub_voice_wav, format='wav')
+
+            output_wav = speedup_audio(cloned_wav, sub_voice_wav)
+
+            updates.append({
+                # In ms
+                'start': speaker['start'] * 1000,
+                'end': speaker['end'] * 1000,
+                'voice': output_wav
+            })
         # ---------------------------------------------------------------------------------------------------
 
         # [Step 5] Creating final speech audio --------------------------------------------------------------
