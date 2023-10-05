@@ -81,10 +81,11 @@ def get_models(device, dim_f, dim_t, n_fft):
 
 class Predictor:
     def __init__(self, args):
-        self.cpu = torch.device("cpu")
+        device_type = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.device = torch.device(device_type)
         self.args = args
         self.model_ = get_models(
-            device=self.cpu, dim_f=args.dim_f, dim_t=args.dim_t, n_fft=args.n_fft
+            device=self.device, dim_f=args.dim_f, dim_t=args.dim_t, n_fft=args.n_fft
         )
         self.model = ort.InferenceSession(
             os.path.join(args.onnx, self.model_.target_name + ".onnx"),
@@ -147,19 +148,22 @@ class Predictor:
                 waves = np.array(mix_p[:, i : i + model.chunk_size])
                 mix_waves.append(waves)
                 i += gen_size
-            mix_waves = torch.tensor(mix_waves, dtype=torch.float32).to(self.cpu)
+            mix_waves = torch.tensor(mix_waves, dtype=torch.float32).to(self.device)
             with torch.no_grad():
                 _ort = self.model
                 spek = model.stft(mix_waves)
                 if self.args.denoise:
+                    input_data_1 = -spek.cuda().numpy() if self.device.type == 'cuda' else -spek.cpu().numpy()
+                    input_data_2 = spek.cuda().numpy() if self.device.type == 'cuda' else spek.cpu().numpy()
                     spec_pred = (
-                        -_ort.run(None, {"input": -spek.cpu().numpy()})[0] * 0.5
-                        + _ort.run(None, {"input": spek.cpu().numpy()})[0] * 0.5
+                            -_ort.run(None, {"input": input_data_1})[0] * 0.5
+                            + _ort.run(None, {"input": input_data_2})[0] * 0.5
                     )
                     tar_waves = model.istft(torch.tensor(spec_pred))
                 else:
+                    input_data = spek.cuda().numpy() if self.device.type == 'cuda' else spek.cpu().numpy()
                     tar_waves = model.istft(
-                        torch.tensor(_ort.run(None, {"input": spek.cpu().numpy()})[0])
+                        torch.tensor(_ort.run(None, {"input": input_data})[0])
                     )
                 tar_signal = (
                     tar_waves[:, :, trim:-trim]

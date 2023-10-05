@@ -20,9 +20,10 @@ class Engine:
     def __init__(self, config, output_language):
         self.output_language = output_language
         self.cloner = VoiceCloner(output_language)
-        self.device = torch.device('cpu')
+        device_type = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.device = torch.device(device_type)
         self.whisper_batch_size = 16
-        self.whisper = load_model('large-v2', device='cpu', compute_type='int8')
+        self.whisper = load_model('large-v2', device=device_type, compute_type='int8')
         self.diarize_model = DiarizationPipeline(use_auth_token=config['HF_TOKEN'], device=self.device)
         self.text_helper = TextHelper()
         self.temp_manager = TempFileManager()
