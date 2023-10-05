@@ -8,6 +8,10 @@
   I am a developer from Moscow 🇷🇺 who devotes his free time to studying new technologies. The project is in an active development phase, but I hope it will help you achieve your goals!
 </p>
 
+<p>
+  Currently, translation support is enabled only from English 🇬🇧!
+</p>
+
 <p align="center">
   <img src="https://i.ibb.co/N2w50HD/corgi.jpg" width="100%" height="auto" />
 </p>
