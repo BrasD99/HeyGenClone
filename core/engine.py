@@ -26,7 +26,7 @@ class Engine:
         self.diarize_model = DiarizationPipeline(use_auth_token=config['HF_TOKEN'], device=self.device)
         self.text_helper = TextHelper()
         self.temp_manager = TempFileManager()
-        self.scene_processor = ScenePreprocessor(config, scenes_batch_num=-1)
+        self.scene_processor = ScenePreprocessor(config)
         self.lip_sync = LipSync()
         self.dereverb = MDXNetDereverb(15)
     

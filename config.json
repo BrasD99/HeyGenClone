@@ -1,5 +1,6 @@
 {
     "LANGUAGES_URL": "https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html",
     "DET_TRESH": 0.3,
+    "DIST_TRESH": 0.2,
     "HF_TOKEN": ""
 }

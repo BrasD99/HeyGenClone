@@ -18,12 +18,11 @@ import numpy as np
 from tqdm import tqdm
 
 class ScenePreprocessor:
-    def __init__(self, config, scenes_batch_num=2):
+    def __init__(self, config):
         self.face_detector = FaceDetector()
         self.dereverb = MDXNetDereverb(15)
         self.temp_manager = TempFileManager()
-        self.dist_tresh = 0.2
-        self.scenes_batch_num = scenes_batch_num
+        self.dist_tresh = config['DIST_TRESH']
         self.db_path = 'scenes'
         self.face_det_tresh = config['DET_TRESH']
 
@@ -86,11 +85,6 @@ class ScenePreprocessor:
         for row in rows:
             output.append(row[0])
         return output
-    
-    def split_into_batches(self, arr):
-        if self.scenes_batch_num == -1:
-            return [arr]
-        return [arr[i:i+self.scenes_batch_num] for i in range(0, len(arr), self.scenes_batch_num)]
     
     def create_db(self, db_key):
         conn = sqlite3.connect(os.path.join(self.db_path, f'{db_key}.db'))
