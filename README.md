@@ -60,4 +60,4 @@ python translate.py video_filename output_language -o output_filename
 
 ## Other
 - Tested on macOS
-- :warning: The project is under development! :warning:
+- :warning: The project is under development!
