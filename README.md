@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://i.ibb.co/9H4f46J/logo.png" width="30%" height="auto" />
+  <img src="https://i.ibb.co/N2w50HD/corgi.jpg" width="100%" height="auto" />
 </p>
 
 ## Installation
