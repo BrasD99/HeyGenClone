@@ -1,6 +1,7 @@
 import torch
 from .models.wav2lip import Wav2Lip
 from .audio import load_wav, melspectrogram
+from core.gfpganer import GFPGANer
 import numpy as np
 import cv2
 import os
@@ -44,6 +45,16 @@ class LipSync:
         self.img_size = 96
         self.mel_step_size = 16
         self.box = [-1, -1, -1, -1]
+        device_type = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.restorer = GFPGANer(
+            model_path=os.path.join('weights', 'GFPGANv1.4.pth'),
+            root_dir='weights',
+            upscale=2,
+            arch='clean',
+            channel_multiplier=2,
+            bg_upsampler=None,
+            device=device_type
+        )
     
     def load_model(self, checkpoint_path):
         model = Wav2Lip()
@@ -146,8 +157,12 @@ class LipSync:
 
             for p, f, c, i in zip(pred, frames, coords, frame_ids):
                 [x1, y1, w, h] = c
-                p = cv2.resize(p.astype(np.uint8), (w, h))
-                f[y1:y1+h, x1:x1+w] = p
+                _, _, r_img = self.restorer.enhance(
+                    cv2.resize(p.astype(np.uint8), (w, h)),
+                    has_aligned=False,
+                    only_center_face=False,
+                    paste_back=True)
+                f[y1:y1+h, x1:x1+w] = r_img
                 frames_dict[i]['frame'] = f
             
         return frames_dict
