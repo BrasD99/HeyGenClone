@@ -61,7 +61,8 @@ python speech_changer.py voice_filename video_filename -o output_filename
 6. Text translation ([googletrans](https://pypi.org/project/googletrans/))
 7. Voice cloning ([TTS](https://github.com/coqui-ai/TTS))
 8. Lip sync ([lipsync](https://github.com/mowshon/lipsync))
-9. [Need to fix] Search for talking faces, determining what this person is saying
+9. Face restoration ([GFPGAN](https://github.com/TencentARC/GFPGAN))
+10. [Need to fix] Search for talking faces, determining what this person is saying
 
 ## Translation results
 | Destination language | Source video | Output video |
