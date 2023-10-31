@@ -18,9 +18,11 @@
 
 ## Installation
 - Clone this repo
-- Install requirements:
+- Install [conda](https://conda.io/projects/conda/en/latest/user-guide/install/)
+- Create environment and install requirements:
   ```
-  pip install -r requirements.txt
+  cd path_to_project/install
+  sh env.bash
   ```
 - In config.json file change HF_TOKEN argument. It is your HuggingFace token. Visit [speaker-diarization](https://hf.co/pyannote/speaker-diarization), [segmentation](https://hf.co/pyannote/segmentation) and accept user conditions
 - Download weights from [drive](https://drive.google.com/file/d/1dYy24q_67TmVuv_PbChe2t1zpNYJci1J/view?usp=sharing), unzip downloaded file into <strong>weights</strong> folder
@@ -36,6 +38,10 @@
 |     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |     ✅      |
 
 ## Usage
+```
+  conda activate heygenclone
+  cd path_to_project
+```
 At the root of the project there is a translate script that translates the video you set.
 - video_filename - the filename of your input video (.mp4)
 - output_language - the code of the language to be translated into
@@ -71,7 +77,7 @@ Note that this example was created without GFPGAN usage!
 |🇷🇺 (Russian)     | [![Watch the video](https://i.ibb.co/KD2KKnj/en.jpg)](https://youtu.be/eGFLPAQAC2Y)    | [![Watch the video](https://i.ibb.co/cbwCy8F/ru.jpg)](https://youtu.be/L2YTmfIr7aI)    |
 
 ## To-Do List
-- [x] Fully GPU support
+- [ ] Fully GPU support
 - [ ] Multithreading support (optimizations)
 - [ ] Detecting talking faces (improvement)
 
