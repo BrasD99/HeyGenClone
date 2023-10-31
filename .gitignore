@@ -6,7 +6,7 @@ weights/detection_Resnet50_Final.pth
 weights/GFPGANv1.4.pth
 weights/parsing_parsenet.pth
 weights/RealESRGAN_x2plus.pth
-pretrained_models/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
