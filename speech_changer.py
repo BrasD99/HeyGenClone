@@ -34,9 +34,9 @@ def update_voice(voice_filename, video_filename, output_filename):
             'frame': frame,
             'has_face': False
         }
-        faces = face_detector.detect(frame, config['DET_TRESH'])
-        if faces:
-            face = faces[0]
+        detections = face_detector.detect(frame, config['DET_TRESH'])
+        if detections:
+            face = detections[0]
             face, bbox = face
             frames[frame_id]['has_face'] = True
             frames[frame_id]['face'] = face
