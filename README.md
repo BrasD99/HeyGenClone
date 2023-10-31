@@ -22,7 +22,7 @@
 - Create environment and install requirements:
   ```
   cd path_to_project/install
-  sh env.bash
+  sh env.sh
   ```
 - In config.json file change HF_TOKEN argument. It is your HuggingFace token. Visit [speaker-diarization](https://hf.co/pyannote/speaker-diarization), [segmentation](https://hf.co/pyannote/segmentation) and accept user conditions
 - Download weights from [drive](https://drive.google.com/file/d/1dYy24q_67TmVuv_PbChe2t1zpNYJci1J/view?usp=sharing), unzip downloaded file into <strong>weights</strong> folder
