@@ -16,7 +16,7 @@
   <img src="https://i.ibb.co/N2w50HD/corgi.jpg" width="100%" height="auto" />
 </p>
 
-## Installation
+## Installation 🥸
 - Clone this repo
 - Install [conda](https://conda.io/projects/conda/en/latest/user-guide/install/)
 - Create environment and install requirements:
@@ -28,7 +28,7 @@
 - Download weights from [drive](https://drive.google.com/file/d/1dYy24q_67TmVuv_PbChe2t1zpNYJci1J/view?usp=sharing), unzip downloaded file into <strong>weights</strong> folder
 - Install [ffmpeg](https://ffmpeg.org/)
 
-## Configurations (config.json)
+## Configurations (config.json) 🧙‍♂️
 | Key | Description | Can modify |
 |     :---:      |     :---:     |     :---:      |
 |     LANGUAGES_URL      |     Url for getting available languages     |     ❌      |
@@ -37,14 +37,14 @@
 |     DB_NAME      |     Name of the database for data storage     |     ✅      |
 |     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |     ✅      |
 
-## Usage
+## Usage 🤩
 ```
   conda activate heygenclone
   cd path_to_project
 ```
 At the root of the project there is a translate script that translates the video you set.
 - video_filename - the filename of your input video (.mp4)
-- output_language - the code of the language to be translated into
+- output_language - the code of the language to be translated into (you can find it [here](https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html))
 - output_filename - the filename of output video (.mp4)
 ```
 python translate.py video_filename output_language -o output_filename
@@ -58,7 +58,7 @@ I also added a script to overlay the voice on the video with lip sync, which all
 python speech_changer.py voice_filename video_filename -o output_filename
 ```
 
-## How it works
+## How it works 😱
 1. Detecting scenes ([PySceneDetect](https://github.com/Breakthrough/PySceneDetect))
 2. Face detection ([yolov8-face](https://github.com/akanametov/yolov8-face))
 3. Reidentification ([deepface](https://github.com/serengil/deepface))
@@ -70,17 +70,20 @@ python speech_changer.py voice_filename video_filename -o output_filename
 9. Face restoration ([GFPGAN](https://github.com/TencentARC/GFPGAN))
 10. [Need to fix] Search for talking faces, determining what this person is saying
 
-## Translation results
+## Translation results 🥺
 Note that this example was created without GFPGAN usage!
 | Destination language | Source video | Output video |
 |     :---:      |     :---:     |     :---:      |
 |🇷🇺 (Russian)     | [![Watch the video](https://i.ibb.co/KD2KKnj/en.jpg)](https://youtu.be/eGFLPAQAC2Y)    | [![Watch the video](https://i.ibb.co/cbwCy8F/ru.jpg)](https://youtu.be/L2YTmfIr7aI)    |
 
-## To-Do List
+## Contributing 🫵🏻
+Contributions are welcomed! I am very glad that so many people are interested in my project. I will be happy to see the pull requests. In the future, all contributors will be included in the list that will be displayed here!
+
+## To-Do List 🤷🏼‍♂️
 - [ ] Fully GPU support
 - [ ] Multithreading support (optimizations)
 - [ ] Detecting talking faces (improvement)
 
-## Other
+## Other 🤘🏻
 - Tested on macOS
 - :warning: The project is under development!
