@@ -2,8 +2,8 @@ import subprocess
 
 def parse_requirements(filename):
     requirements = []
-    with open('requirements.txt', 'r') as file:
-        for i, line in enumerate(file):
+    with open(filename, 'r') as file:
+        for line in file:
             line = line.strip()
             if line:
                 requirements.append(line)
