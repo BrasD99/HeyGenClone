@@ -19,10 +19,12 @@
 ## Installation 🥸
 - Clone this repo
 - Install [conda](https://conda.io/projects/conda/en/latest/user-guide/install/)
-- Create environment and install requirements:
+- Create environment with Python 3.10 (for MacOS refer to [link](https://www.mrdbourke.com/setup-apple-m1-pro-and-m1-max-for-machine-learning-and-data-science/))
+- Activate environment
+- Install requirements:
   ```
   cd path_to_project
-  sh install/env.sh
+  python install.py
   ```
 - In config.json file change HF_TOKEN argument. It is your HuggingFace token. Visit [speaker-diarization](https://hf.co/pyannote/speaker-diarization), [segmentation](https://hf.co/pyannote/segmentation) and accept user conditions
 - Download weights from [drive](https://drive.google.com/file/d/1dYy24q_67TmVuv_PbChe2t1zpNYJci1J/view?usp=sharing), unzip downloaded file into <strong>weights</strong> folder
@@ -39,7 +41,8 @@
 
 ## Usage 🤩
 ```
-  conda activate heygenclone
+  # Activate your environment:
+  conda activate your_env_name
   cd path_to_project
 ```
 At the root of the project there is a translate script that translates the video you set.
