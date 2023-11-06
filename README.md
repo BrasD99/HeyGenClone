@@ -40,9 +40,12 @@
 |     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |     ✅      |
 
 ## Usage 🤩
+- Activate your environment:
 ```
-  # Activate your environment:
   conda activate your_env_name
+```
+- Сd to project path:
+```
   cd path_to_project
 ```
 At the root of the project there is a translate script that translates the video you set.
