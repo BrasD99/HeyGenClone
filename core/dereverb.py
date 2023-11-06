@@ -153,11 +153,9 @@ class Predictor:
                 _ort = self.model
                 spek = model.stft(mix_waves)
                 if self.args.denoise:
-                    input_data_1 = -spek.cuda().numpy() if self.device.type == 'cuda' else -spek.cpu().numpy()
-                    input_data_2 = spek.cuda().numpy() if self.device.type == 'cuda' else spek.cpu().numpy()
                     spec_pred = (
-                            -_ort.run(None, {'input': input_data_1})[0] * 0.5
-                            + _ort.run(None, {'input': input_data_2})[0] * 0.5
+                        -_ort.run(None, {'input': -spek.cpu().numpy()})[0] * 0.5
+                        + _ort.run(None, {'input': spek.cpu().numpy()})[0] * 0.5
                     )
                     tar_waves = model.istft(torch.tensor(spec_pred))
                 else:
