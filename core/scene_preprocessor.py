@@ -13,7 +13,6 @@ import sqlite3
 import uuid
 import pickle
 import os
-import shutil
 import numpy as np
 from tqdm import tqdm
 
