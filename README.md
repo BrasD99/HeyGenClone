@@ -19,7 +19,7 @@
 ## Installation 🥸
 - Clone this repo
 - Install [conda](https://conda.io/projects/conda/en/latest/user-guide/install/)
-- Create environment with Python 3.10 (for MacOS refer to [link](https://www.mrdbourke.com/setup-apple-m1-pro-and-m1-max-for-machine-learning-and-data-science/))
+- Create environment with Python 3.10 (for macOS refer to [link](https://www.mrdbourke.com/setup-apple-m1-pro-and-m1-max-for-machine-learning-and-data-science/))
 - Activate environment
 - Install requirements:
   ```
