@@ -16,6 +16,8 @@
   <img src="https://i.ibb.co/N2w50HD/corgi.jpg" width="100%" height="auto" />
 </p>
 
+Out Telegram group: [invite link](https://t.me/+IlOPXyNkscxhZjJi)
+
 ## Installation 🥸
 - Clone this repo
 - Install [conda](https://conda.io/projects/conda/en/latest/user-guide/install/)
