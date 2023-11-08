@@ -12,11 +12,13 @@
   Currently, translation support is enabled only from English 🇬🇧!
 </p>
 
-Our Telegram group: [invitation link](https://t.me/+IlOPXyNkscxhZjJi)
-
 <p align="center">
   <img src="https://i.ibb.co/N2w50HD/corgi.jpg" width="100%" height="auto" />
 </p>
+
+<a href="https://t.me/+IlOPXyNkscxhZjJi">
+  <img src="https://i.ibb.co/1rhq3V7/tg.png" width="8%" height="auto" />
+</a>
 
 ## Installation 🥸
 - Clone this repo
