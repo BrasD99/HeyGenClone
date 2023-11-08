@@ -12,11 +12,11 @@
   Currently, translation support is enabled only from English 🇬🇧!
 </p>
 
+Out Telegram group: [invite link](https://t.me/+IlOPXyNkscxhZjJi)
+
 <p align="center">
   <img src="https://i.ibb.co/N2w50HD/corgi.jpg" width="100%" height="auto" />
 </p>
-
-Out Telegram group: [invite link](https://t.me/+IlOPXyNkscxhZjJi)
 
 ## Installation 🥸
 - Clone this repo
