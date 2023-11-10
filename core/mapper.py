@@ -130,15 +130,19 @@ trans_dict = {
     'yoruba': 'yo'
 }
 
+
 def get_languages():
     return list(trans_dict.keys())
+
 
 def is_valid_lang(language):
     languages = get_languages()
     return language.lower() in languages
 
+
 def map_to_tts(code):
     return tts_dict[code.lower()]
+
 
 def map_to_trans(code):
     return trans_dict[code.lower()]

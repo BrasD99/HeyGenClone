@@ -12,11 +12,13 @@ def get_duration(filename):
     data = json.loads(output)
     return float(data['format']['duration'])
 
+
 def format_duration(duration):
     hours, remainder = divmod(int(duration), 3600)
     minutes, seconds = divmod(remainder, 60)
     milliseconds = int((duration - int(duration)) * 1000)
     return f'{hours:02d}:{minutes:02d}:{seconds:02d}.{milliseconds:03d}'
+
 
 def merge(audio_filename, avi_filename, out_filename):
     audio_duration = get_duration(audio_filename)
@@ -39,6 +41,7 @@ def merge(audio_filename, avi_filename, out_filename):
     )
     subprocess.call(command, shell=True)
 
+
 def to_avi(frames, fps):
     temp_manager = TempFileManager()
     temp_result_avi = temp_manager.create_temp_file(suffix='.avi').name
@@ -46,7 +49,8 @@ def to_avi(frames, fps):
     frame_h, frame_w = frames[first_frame]['frame'].shape[:-1]
 
     out = cv2.VideoWriter(
-        temp_result_avi, cv2.VideoWriter_fourcc(*'DIVX'), fps, (frame_w, frame_h)
+        temp_result_avi, cv2.VideoWriter_fourcc(
+            *'DIVX'), fps, (frame_w, frame_h)
     )
 
     for frame in frames.values():
@@ -56,12 +60,14 @@ def to_avi(frames, fps):
 
     return temp_result_avi
 
+
 def find_person_id(frame_id, speakers, fps):
     for speaker in speakers:
         if 'id' in speaker:
             if int(speaker['start'] * fps) <= frame_id and int(speaker['end'] * fps) >= frame_id:
                 return speaker['id']
     return None
+
 
 def to_extended_frames(frames, speakers, fps, get_face_on_frame):
     extended_frames = dict()
@@ -78,8 +84,9 @@ def to_extended_frames(frames, speakers, fps, get_face_on_frame):
                 extended_frames[frame_id]['has_face'] = True
                 extended_frames[frame_id]['face'] = face_dict['face']
                 extended_frames[frame_id]['bbox'] = face_dict['bbox']
-            
+
     return extended_frames
+
 
 def get_voice_segments(speakers):
     segments = []
@@ -87,11 +94,13 @@ def get_voice_segments(speakers):
         segments.append((speaker['start'], speaker['end']))
     return segments
 
+
 def find_speaker(groups):
     if groups:
         counter = Counter(groups)
         return counter.most_common(1)[0][0]
     return None
+
 
 def merge_voices(transcriptions, voice_audio):
     speakers_dict = dict()
@@ -99,11 +108,14 @@ def merge_voices(transcriptions, voice_audio):
     for transcription in transcriptions:
         if 'id' in transcription:
             if not transcription['id'] in speakers_dict:
-                speakers_dict[transcription['id']] = AudioSegment.silent(duration=0)
-            sub_voice = voice_audio[transcription['start'] * 1000: transcription['end'] * 1000]
+                speakers_dict[transcription['id']
+                              ] = AudioSegment.silent(duration=0)
+            sub_voice = voice_audio[transcription['start']
+                                    * 1000: transcription['end'] * 1000]
             speakers_dict[transcription['id']] += sub_voice
-        
+
     return speakers_dict
+
 
 def get_timestaps(words):
     if words:
@@ -112,6 +124,7 @@ def get_timestaps(words):
         return first_word['start'], last_word['end']
     else:
         0.0, 0.0
+
 
 def to_segments(updates, audio_duration):
     segments = []
@@ -124,12 +137,14 @@ def to_segments(updates, audio_duration):
 
         if start > prev_end:
             segments.append({'start': prev_end, 'end': start, 'empty': True})
-        
-        segments.append({'start': start, 'end': end, 'empty': False, 'voice': voice })
+
+        segments.append({'start': start, 'end': end,
+                        'empty': False, 'voice': voice})
 
         if i + 1 == len(updates) and end < audio_duration:
-            segments.append({'start': end, 'end': audio_duration, 'empty': True})
-        
+            segments.append(
+                {'start': end, 'end': audio_duration, 'empty': True})
+
         prev_end = end
 
     return segments

@@ -43,9 +43,9 @@ requirements = {
 for name, requirement in requirements.items():
     print(f'Installing package "{name}"...')
     subprocess.run(
-        f'pip install {requirement}', 
-        shell=True, 
-        stdout=subprocess.DEVNULL, 
+        f'pip install {requirement}',
+        shell=True,
+        stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL)
 
 print('Done!')

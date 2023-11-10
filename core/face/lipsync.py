@@ -7,6 +7,7 @@ import cv2
 import os
 import tempfile
 
+
 class LipSync:
     def __init__(self):
         checkpoint_path = os.path.join('weights', 'wav2lip_gan.pth')
@@ -55,10 +56,10 @@ class LipSync:
             bg_upsampler=None,
             device=device_type
         )
-    
+
     def load_model(self, checkpoint_path):
         model = Wav2Lip()
-        #print('Load checkpoint from: {}'.format(checkpoint_path))
+        # print('Load checkpoint from: {}'.format(checkpoint_path))
         checkpoint = self._load(checkpoint_path)
         s = checkpoint['state_dict']
         new_s = {}
@@ -68,7 +69,7 @@ class LipSync:
 
         model = model.to(self.device)
         return model.eval()
-    
+
     def _load(self, checkpoint_path):
         if self.device == 'cuda':
             checkpoint = torch.load(checkpoint_path)
@@ -76,7 +77,7 @@ class LipSync:
             checkpoint = torch.load(checkpoint_path,
                                     map_location=lambda storage, loc: storage)
         return checkpoint
-    
+
     def datagen(self, frames_dict, mels):
         img_batch, mel_batch, frame_batch, coords_batch, frame_ids = [], [], [], [], []
 
@@ -96,13 +97,16 @@ class LipSync:
                 frame_ids.append(idx)
 
             if len(img_batch) >= self.wav2lip_batch_size:
-                img_batch, mel_batch = np.asarray(img_batch), np.asarray(mel_batch)
+                img_batch, mel_batch = np.asarray(
+                    img_batch), np.asarray(mel_batch)
 
                 img_masked = img_batch.copy()
                 img_masked[:, self.img_size // 2:] = 0
 
-                img_batch = np.concatenate((img_masked, img_batch), axis=3) / 255.
-                mel_batch = np.reshape(mel_batch, [len(mel_batch), mel_batch.shape[1], mel_batch.shape[2], 1])
+                img_batch = np.concatenate(
+                    (img_masked, img_batch), axis=3) / 255.
+                mel_batch = np.reshape(
+                    mel_batch, [len(mel_batch), mel_batch.shape[1], mel_batch.shape[2], 1])
 
                 yield img_batch, mel_batch, frame_batch, coords_batch, frame_ids
                 img_batch, mel_batch, frame_batch, coords_batch, frame_ids = [], [], [], [], []
@@ -114,14 +118,15 @@ class LipSync:
             img_masked[:, self.img_size // 2:] = 0
 
             img_batch = np.concatenate((img_masked, img_batch), axis=3) / 255.
-            mel_batch = np.reshape(mel_batch, [len(mel_batch), mel_batch.shape[1], mel_batch.shape[2], 1])
+            mel_batch = np.reshape(
+                mel_batch, [len(mel_batch), mel_batch.shape[1], mel_batch.shape[2], 1])
 
             yield img_batch, mel_batch, frame_batch, coords_batch, frame_ids
-    
+
     def sync(self, frames_dict, audio_file, fps, use_enhancer):
         wav = load_wav(audio_file, 16000)
         mel = melspectrogram(wav)
-        #print(mel.shape)
+        # print(mel.shape)
 
         if np.isnan(mel.reshape(-1)).sum() > 0:
             raise ValueError(
@@ -136,18 +141,21 @@ class LipSync:
             if start_idx + self.mel_step_size > len(mel[0]):
                 mel_chunks.append(mel[:, len(mel[0]) - self.mel_step_size:])
                 break
-            mel_chunks.append(mel[:, start_idx: start_idx + self.mel_step_size])
+            mel_chunks.append(
+                mel[:, start_idx: start_idx + self.mel_step_size])
             i += 1
-        
-        #print('Length of mel chunks: {}'.format(len(mel_chunks)))
+
+        # print('Length of mel chunks: {}'.format(len(mel_chunks)))
 
         gen = self.datagen(frames_dict, mel_chunks)
 
         for i, (img_batch, mel_batch, frames, coords, frame_ids) in \
-            enumerate(gen):
-            
-            img_batch = torch.FloatTensor(np.transpose(img_batch, (0, 3, 1, 2))).to(self.device)
-            mel_batch = torch.FloatTensor(np.transpose(mel_batch, (0, 3, 1, 2))).to(self.device)
+                enumerate(gen):
+
+            img_batch = torch.FloatTensor(np.transpose(
+                img_batch, (0, 3, 1, 2))).to(self.device)
+            mel_batch = torch.FloatTensor(np.transpose(
+                mel_batch, (0, 3, 1, 2))).to(self.device)
 
             with torch.no_grad():
                 pred = self.model(mel_batch, img_batch)
@@ -164,5 +172,5 @@ class LipSync:
                 else:
                     f[y1:y1+h, x1:x1+w] = face
                 frames_dict[i]['frame'] = f
-            
+
         return frames_dict

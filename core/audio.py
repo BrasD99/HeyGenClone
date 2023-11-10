@@ -7,6 +7,7 @@ from pydub.silence import detect_nonsilent
 from audiostretchy.stretch import stretch_audio
 from core.temp_manager import TempFileManager
 
+
 def split_on_silence(audio_segment, min_silence_len=1000, silence_thresh=-16, keep_silence=100,
                      seek_step=1):
     def pairwise(iterable):
@@ -14,14 +15,14 @@ def split_on_silence(audio_segment, min_silence_len=1000, silence_thresh=-16, ke
         a, b = itertools.tee(iterable)
         next(b, None)
         return zip(a, b)
-    
+
     if isinstance(keep_silence, bool):
         keep_silence = len(audio_segment) if keep_silence else 0
-    
+
     output_ranges = [
-        [ start - keep_silence, end + keep_silence ]
-        for (start,end)
-            in detect_nonsilent(audio_segment, min_silence_len, silence_thresh, seek_step)
+        [start - keep_silence, end + keep_silence]
+        for (start, end)
+        in detect_nonsilent(audio_segment, min_silence_len, silence_thresh, seek_step)
     ]
 
     for range_i, range_ii in pairwise(output_ranges):
@@ -33,17 +34,20 @@ def split_on_silence(audio_segment, min_silence_len=1000, silence_thresh=-16, ke
 
     return [
         {
-            'audio': audio_segment[max(start, 0) : min(end, len(audio_segment))],
-            'start': max(start,0),
-            'end': min(end,len(audio_segment))
+            'audio': audio_segment[max(start, 0): min(end, len(audio_segment))],
+            'start': max(start, 0),
+            'end': min(end, len(audio_segment))
         }
         for start, end in output_ranges
     ]
 
+
 def remove_silence(audio, silence_thresh=-40):
     silence_thresh = float(silence_thresh)  # Convert silence_thresh to float
-    non_silent_audio = split_on_silence(audio, min_silence_len=1000, silence_thresh=silence_thresh)
+    non_silent_audio = split_on_silence(
+        audio, min_silence_len=1000, silence_thresh=silence_thresh)
     return non_silent_audio
+
 
 def join_audio_segments(segments, segment_duration, min_segment_duration):
     joined_segments = []
@@ -66,28 +70,32 @@ def join_audio_segments(segments, segment_duration, min_segment_duration):
 
     return joined_segments
 
+
 def split_audio_on_silence(
         audio_file_path,
         silence_thresh,
         output_format='wav'):
-    
+
     audio = AudioSegment.from_file(audio_file_path)
     non_silent_audio = remove_silence(audio, silence_thresh=silence_thresh)
-    
+
     temp_files = []
     temp_manager = TempFileManager()
     for k, segment in enumerate(non_silent_audio):
         segment_file_name = f'segment_{k + 1}.{output_format}'
         temp_file = temp_manager.create_temp_file(suffix=f'.{output_format}')
-        segment['audio'].export(temp_file.name, format=output_format)  # Write segment to the temp file
+        # Write segment to the temp file
+        segment['audio'].export(temp_file.name, format=output_format)
         temp_file.close()  # Close the temp file
-        temp_file_name = os.path.join(os.path.dirname(temp_file.name), segment_file_name)
+        temp_file_name = os.path.join(
+            os.path.dirname(temp_file.name), segment_file_name)
 
         # Check if the destination file already exists
         counter = 1
         while os.path.exists(temp_file_name):
             segment_file_name = f'segment_{k + 1}_{counter}.{output_format}'
-            temp_file_name = os.path.join(os.path.dirname(temp_file.name), segment_file_name)
+            temp_file_name = os.path.join(
+                os.path.dirname(temp_file.name), segment_file_name)
             counter += 1
 
         os.rename(temp_file.name, temp_file_name)  # Rename the temp file
@@ -98,7 +106,8 @@ def split_audio_on_silence(
         })
 
     return temp_files
-    
+
+
 def speed_change(sound, speed=1.0):
     # Manually override the frame_rate. This tells the computer how many
     # samples to play per second
@@ -110,7 +119,8 @@ def speed_change(sound, speed=1.0):
     # so that regular playback programs will work right. They often only
     # know how to play audio at standard frame rate (like 44.1k)
     return sound_with_altered_frame_rate.set_frame_rate(sound.frame_rate)
-    
+
+
 def speedup_audio(src_audio_filename, dst_audio_filename):
     src = AudioSegment.from_file(src_audio_filename)
     dst = AudioSegment.from_file(dst_audio_filename)
@@ -132,6 +142,7 @@ def speedup_audio(src_audio_filename, dst_audio_filename):
 
     return temp_file
 
+
 def combine_audio(audio_file_1, audio_file_2):
     a1 = AudioSegment.from_wav(audio_file_1)
     a2 = AudioSegment.from_wav(audio_file_2)
@@ -140,5 +151,5 @@ def combine_audio(audio_file_1, audio_file_2):
     temp_manager = TempFileManager()
     temp_file = temp_manager.create_temp_file(suffix='.wav').name
 
-    tmpsound.export(temp_file, format='wav') 
+    tmpsound.export(temp_file, format='wav')
     return temp_file

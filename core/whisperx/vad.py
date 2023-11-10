@@ -17,9 +17,10 @@ from .diarize import Segment as SegmentX
 
 VAD_SEGMENTATION_URL = 'https://whisperx.s3.eu-west-2.amazonaws.com/model_weights/segmentation/0b5b3216d60a2d32fc086b47ea8c67589aaeb26b7e07fcbe620d6d0b83e209ea/pytorch_model.bin'
 
+
 def load_vad_model(device, vad_onset=0.500, vad_offset=0.363, use_auth_token=None, model_fp=None):
     model_dir = torch.hub._get_torch_home()
-    os.makedirs(model_dir, exist_ok = True)
+    os.makedirs(model_dir, exist_ok=True)
     if model_fp is None:
         model_fp = os.path.join(model_dir, 'whisperx-vad-segmentation.bin')
     if os.path.exists(model_fp) and not os.path.isfile(model_fp):
@@ -49,14 +50,16 @@ def load_vad_model(device, vad_onset=0.500, vad_offset=0.363, use_auth_token=Non
         )
 
     vad_model = Model.from_pretrained(model_fp, use_auth_token=use_auth_token)
-    hyperparameters = {'onset': vad_onset, 
-                    'offset': vad_offset,
-                    'min_duration_on': 0.1,
-                    'min_duration_off': 0.1}
-    vad_pipeline = VoiceActivitySegmentation(segmentation=vad_model, device=torch.device(device))
+    hyperparameters = {'onset': vad_onset,
+                       'offset': vad_offset,
+                       'min_duration_on': 0.1,
+                       'min_duration_off': 0.1}
+    vad_pipeline = VoiceActivitySegmentation(
+        segmentation=vad_model, device=torch.device(device))
     vad_pipeline.instantiate(hyperparameters)
 
     return vad_pipeline
+
 
 class Binarize:
     '''Binarize detection scores using hysteresis thresholding, with min-cut operation
@@ -87,7 +90,7 @@ class Binarize:
 
     Modified by Max Bain to include WhisperX's min-cut operation 
     https://arxiv.org/abs/2303.00747
-    
+
     Pyannote-audio
     '''
 
@@ -144,21 +147,24 @@ class Binarize:
             curr_timestamps = [start]
             for t, y in zip(timestamps[1:], k_scores[1:]):
                 # currently active
-                if is_active: 
+                if is_active:
                     curr_duration = t - start
                     if curr_duration > self.max_duration:
                         search_after = len(curr_scores) // 2
                         # divide segment
-                        min_score_div_idx = search_after + np.argmin(curr_scores[search_after:])
+                        min_score_div_idx = search_after + \
+                            np.argmin(curr_scores[search_after:])
                         min_score_t = curr_timestamps[min_score_div_idx]
-                        region = Segment(start - self.pad_onset, min_score_t + self.pad_offset)
+                        region = Segment(start - self.pad_onset,
+                                         min_score_t + self.pad_offset)
                         active[region, k] = label
                         start = curr_timestamps[min_score_div_idx]
                         curr_scores = curr_scores[min_score_div_idx+1:]
                         curr_timestamps = curr_timestamps[min_score_div_idx+1:]
                     # switching from active to inactive
                     elif y < self.offset:
-                        region = Segment(start - self.pad_onset, t + self.pad_offset)
+                        region = Segment(
+                            start - self.pad_onset, t + self.pad_offset)
                         active[region, k] = label
                         start = t
                         is_active = False
@@ -182,7 +188,8 @@ class Binarize:
         # also: fill same speaker gaps shorter than min_duration_off
         if self.pad_offset > 0.0 or self.pad_onset > 0.0 or self.min_duration_off > 0.0:
             if self.max_duration < float('inf'):
-                raise NotImplementedError(f'This would break current max_duration param')
+                raise NotImplementedError(
+                    f'This would break current max_duration param')
             active = active.support(collar=self.min_duration_off)
 
         # remove tracks shorter than min_duration_on
@@ -203,7 +210,8 @@ class VoiceActivitySegmentation(VoiceActivityDetection):
         **inference_kwargs,
     ):
 
-        super().__init__(segmentation=segmentation, fscore=fscore, use_auth_token=use_auth_token, **inference_kwargs)
+        super().__init__(segmentation=segmentation, fscore=fscore,
+                         use_auth_token=use_auth_token, **inference_kwargs)
 
     def apply(self, file: AudioFile, hook: Optional[Callable] = None) -> Annotation:
         '''Apply voice activity detection
@@ -246,19 +254,19 @@ def merge_vad(vad_arr, pad_onset=0.0, pad_offset=0.0, min_duration_off=0.0, min_
         region = Segment(vad_t[0] - pad_onset, vad_t[1] + pad_offset)
         active[region, k] = 1
 
-
     if pad_offset > 0.0 or pad_onset > 0.0 or min_duration_off > 0.0:
         active = active.support(collar=min_duration_off)
-    
+
     # remove tracks shorter than min_duration_on
     if min_duration_on > 0:
         for segment, track in list(active.itertracks()):
             if segment.duration < min_duration_on:
-                    del active[segment, track]
-    
+                del active[segment, track]
+
     active = active.for_json()
     active_segs = pd.DataFrame([x['segment'] for x in active['content']])
     return active_segs
+
 
 def merge_chunks(segments, chunk_size):
     '''
@@ -274,7 +282,8 @@ def merge_chunks(segments, chunk_size):
     segments = binarize(segments)
     segments_list = []
     for speech_turn in segments.get_timeline():
-        segments_list.append(SegmentX(speech_turn.start, speech_turn.end, 'UNKNOWN'))
+        segments_list.append(
+            SegmentX(speech_turn.start, speech_turn.end, 'UNKNOWN'))
 
     if len(segments_list) == 0:
         print('No active speech found in audio')
@@ -297,9 +306,9 @@ def merge_chunks(segments, chunk_size):
         seg_idxs.append((seg.start, seg.end))
         speaker_idxs.append(seg.speaker)
     # add final
-    merged_segments.append({ 
-                'start': curr_start,
-                'end': curr_end,
-                'segments': seg_idxs,
-            })    
+    merged_segments.append({
+        'start': curr_start,
+        'end': curr_end,
+        'segments': seg_idxs,
+    })
     return merged_segments

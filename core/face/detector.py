@@ -1,6 +1,7 @@
 from ultralytics import YOLO
 import os
-#import requests
+# import requests
+
 
 class FaceDetector:
     def __init__(self):

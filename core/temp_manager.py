@@ -2,6 +2,7 @@ import atexit
 import os
 import tempfile
 
+
 class TempFileManager:
     _instance = None
     temp_files = []

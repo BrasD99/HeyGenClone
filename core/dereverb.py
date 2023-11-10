@@ -7,6 +7,7 @@ import onnxruntime as ort
 import soundfile as sf
 from core.temp_manager import TempFileManager
 
+
 class Conv_TDF_net_trim:
     def __init__(
         self, device, model_name, target_name, L, dim_f, dim_t, n_fft, hop=1024
@@ -67,7 +68,8 @@ class Conv_TDF_net_trim:
             x, n_fft=self.n_fft, hop_length=self.hop, window=self.window, center=True
         )
         return x.reshape([-1, c, self.chunk_size])
-    
+
+
 def get_models(device, dim_f, dim_t, n_fft):
     return Conv_TDF_net_trim(
         device=device,
@@ -78,6 +80,7 @@ def get_models(device, dim_f, dim_t, n_fft):
         dim_t=dim_t,
         n_fft=n_fft,
     )
+
 
 class Predictor:
     def __init__(self, args):
@@ -140,22 +143,26 @@ class Predictor:
             gen_size = model.chunk_size - 2 * trim
             pad = gen_size - n_sample % gen_size
             mix_p = np.concatenate(
-                (np.zeros((2, trim)), cmix, np.zeros((2, pad)), np.zeros((2, trim))), 1
+                (np.zeros((2, trim)), cmix, np.zeros(
+                    (2, pad)), np.zeros((2, trim))), 1
             )
             mix_waves = []
             i = 0
             while i < n_sample + pad:
-                waves = np.array(mix_p[:, i : i + model.chunk_size])
+                waves = np.array(mix_p[:, i: i + model.chunk_size])
                 mix_waves.append(waves)
                 i += gen_size
-            mix_waves = torch.tensor(mix_waves, dtype=torch.float32).to(self.device)
+            mix_waves = torch.tensor(
+                mix_waves, dtype=torch.float32).to(self.device)
             with torch.no_grad():
                 _ort = self.model
                 spek = model.stft(mix_waves)
                 if self.args.denoise:
                     spec_pred = (
-                        -_ort.run(None, {'input': -spek.cpu().numpy()})[0] * 0.5
-                        + _ort.run(None, {'input': spek.cpu().numpy()})[0] * 0.5
+                        -_ort.run(None, {'input': -
+                                  spek.cpu().numpy()})[0] * 0.5
+                        + _ort.run(None,
+                                   {'input': spek.cpu().numpy()})[0] * 0.5
                     )
                     tar_waves = model.istft(torch.tensor(spec_pred))
                 else:
@@ -171,7 +178,8 @@ class Predictor:
                 )
 
                 start = 0 if mix == 0 else margin_size
-                end = None if mix == list(mixes.keys())[::-1][0] else -margin_size
+                end = None if mix == list(mixes.keys())[
+                    ::-1][0] else -margin_size
                 if margin_size == 0:
                     end = None
                 sources.append(tar_signal[:, start:end])
@@ -195,14 +203,15 @@ class Predictor:
         voice_temp_file = temp_manager.create_temp_file(suffix='.wav')
         noise_temp_file = temp_manager.create_temp_file(suffix='.wav')
         sf.write(
-                voice_temp_file, mix - opt, rate
-            )
+            voice_temp_file, mix - opt, rate
+        )
         sf.write(noise_temp_file, opt, rate)
 
         return {
             'voice_file': voice_temp_file.name,
             'noise_file': noise_temp_file.name
         }
+
 
 class MDXNetDereverb:
     def __init__(self, chunks):
