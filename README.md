@@ -35,12 +35,12 @@
 - Install [ffmpeg](https://ffmpeg.org/)
 
 ## Configurations (config.json) 🧙‍♂️
-| Key | Description | Can modify |
-|     :---:      |     :---:     |     :---:      |
-|     DET_TRESH      |     Face detection treshtold [0.0:1.0]     |     ✅      |
-|     DIST_TRESH      |     Face embeddings distance treshtold [0.0:1.0]     |     ✅      |
-|     DB_NAME      |     Name of the database for data storage     |     ✅      |
-|     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |     ✅      |
+| Key | Description |
+|     :---:      |     :---:      |
+|     DET_TRESH      |     Face detection treshtold [0.0:1.0]     |
+|     DIST_TRESH      |     Face embeddings distance treshtold [0.0:1.0]     |
+|     DB_NAME      |     Name of the database for data storage     |
+|     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |
 
 ## Usage 🤩
 - Activate your environment:
