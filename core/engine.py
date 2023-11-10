@@ -43,6 +43,7 @@ class Engine:
         self.scene_processor = ScenePreprocessor(config)
         self.lip_sync = LipSync()
         self.dereverb = MDXNetDereverb(15)
+        self.use_enhancer = config['USE_ENHANCER']
     
     def __call__(self, video_file_path, output_file_path):
         # [Step 1] Reading the video, getting audio (voice + noise), as well as the text of the voice -------
@@ -150,7 +151,7 @@ class Engine:
         
         frames = to_extended_frames(frames, speakers, orig_clip.fps, self.scene_processor.get_face_on_frame)
         self.scene_processor.close()
-        frames = self.lip_sync.sync(frames, speech_audio_wav, orig_clip.fps)
+        frames = self.lip_sync.sync(frames, speech_audio_wav, orig_clip.fps, self.use_enhancer)
         # ---------------------------------------------------------------------------------------------------
 
         # [Step 7] Merging speech voice and noise, creating output ------------------------------------------

@@ -118,7 +118,7 @@ class LipSync:
 
             yield img_batch, mel_batch, frame_batch, coords_batch, frame_ids
     
-    def sync(self, frames_dict, audio_file, fps):
+    def sync(self, frames_dict, audio_file, fps, use_enhancer):
         wav = load_wav(audio_file, 16000)
         mel = melspectrogram(wav)
         #print(mel.shape)
@@ -157,12 +157,12 @@ class LipSync:
 
             for p, f, c, i in zip(pred, frames, coords, frame_ids):
                 [x1, y1, w, h] = c
-                _, _, r_img = self.restorer.enhance(
-                    cv2.resize(p.astype(np.uint8), (w, h)),
-                    has_aligned=False,
-                    only_center_face=False,
-                    paste_back=True)
-                f[y1:y1+h, x1:x1+w] = r_img
+                face = cv2.resize(p.astype(np.uint8), (w, h))
+                if use_enhancer:
+                    _, _, r_img = self.restorer.enhance(face)
+                    f[y1:y1+h, x1:x1+w] = cv2.resize(r_img, (w, h))
+                else:
+                    f[y1:y1+h, x1:x1+w] = face
                 frames_dict[i]['frame'] = f
             
         return frames_dict

@@ -1,5 +1,6 @@
 {
     "DET_TRESH": 0.3,
     "DIST_TRESH": 0.2,
-    "HF_TOKEN": ""
+    "HF_TOKEN": "",
+    "USE_ENHANCER": false
 }

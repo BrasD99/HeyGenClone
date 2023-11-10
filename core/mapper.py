@@ -1,4 +1,4 @@
-DEFAULT_VIDEO_LANGS = ['en', 'eng']
+DEFAULT_VIDEO_LANGS = ['en']
 
 tts_dict = {
     'albanian': 'sqi',
