@@ -42,6 +42,9 @@
 |     DB_NAME      |     Name of the database for data storage     |
 |     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |
 
+## Supported languages 🙂
+Albanian, Amharic, Arabic, Armenian, Azerbaijani, Basque, Bengali, Bulgarian, Catalan, Cebuano, Chichewa, Chinese, Dutch, English, Finnish, French, German, Greek, Gujarati, Haitian creole, Hausa, Hebrew, Hindi, Hungarian, Icelandic, Indonesian, Javanese, Kannada, Kazakh, Khmer, Korean, Kyrgyz, Lao, Latin, Latvian, Malagasy, Malay, Malayalam, Marathi, Mongolian, Odia, Persian, Polish, Portuguese, Punjabi, Romanian, Russian, Samoan, Shona, Somali, Spanish, Swahili, Swedish, Tajik, Tamil, Telugu, Thai, Turkish, Ukrainian, Vietnamese, Welsh, Yoruba
+
 ## Usage 🤩
 - Activate your environment:
 ```
@@ -53,7 +56,7 @@
 ```
 At the root of the project there is a translate script that translates the video you set.
 - video_filename - the filename of your input video (.mp4)
-- output_language - the code of the language to be translated into (you can find it [here](https://github.com/BrasD99/HeyGenClone/blob/main/core/mapper.py))
+- output_language - the code of the language to be translated into (you can also find it [here](https://github.com/BrasD99/HeyGenClone/blob/main/core/mapper.py))
 - output_filename - the filename of output video (.mp4)
 ```
 python translate.py video_filename output_language -o output_filename
