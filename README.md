@@ -16,10 +16,14 @@
   <img src="https://i.ibb.co/N2w50HD/corgi.jpg" width="100%" height="auto" />
 </p>
 
+<a href="https://t.me/heygenclone" target="_blank">
+  <img src="https://i.ibb.co/1rhq3V7/tg.png" width="8%" height="auto" />
+</a>
+
 ## Installation 🥸
 - Clone this repo
 - Install [conda](https://conda.io/projects/conda/en/latest/user-guide/install/)
-- Create environment with Python 3.10 (for MacOS refer to [link](https://www.mrdbourke.com/setup-apple-m1-pro-and-m1-max-for-machine-learning-and-data-science/))
+- Create environment with Python 3.10 (for macOS refer to [link](https://www.mrdbourke.com/setup-apple-m1-pro-and-m1-max-for-machine-learning-and-data-science/))
 - Activate environment
 - Install requirements:
   ```
