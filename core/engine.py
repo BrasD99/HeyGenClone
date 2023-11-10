@@ -11,6 +11,7 @@ from core.helpers import (
     find_speaker, 
     get_voice_segments
 )
+from core.mapper import DEFAULT_VIDEO_LANGS, is_valid_lang
 from core.translator import TextHelper
 from core.audio import speedup_audio, combine_audio
 from core.temp_manager import TempFileManager
@@ -28,6 +29,8 @@ class Engine:
     def __init__(self, config, output_language):
         if not config['HF_TOKEN']:
             raise Exception('No HuggingFace token providen!')
+        if not is_valid_lang(output_language):
+            raise Exception(f'Unsupported language provided: {output_language}')
         self.output_language = output_language
         self.cloner = VoiceCloner(output_language)
         device_type = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -52,6 +55,9 @@ class Engine:
         noise_audio = AudioSegment.from_file(dereverb_out['noise_file'], format='wav')
 
         speakers, lang = self.transcribe_audio_extended(dereverb_out['voice_file'])
+
+        if not lang in DEFAULT_VIDEO_LANGS:
+            raise Exception(f'Invalid video language: {lang.lower()} detected, currently supported only {", ".join(DEFAULT_VIDEO_LANGS)}')
         # ---------------------------------------------------------------------------------------------------
         
         # [Step 2] Getting voice segments, frames, do face detection + reidentification ---------------------
