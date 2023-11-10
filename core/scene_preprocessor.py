@@ -23,7 +23,7 @@ class ScenePreprocessor:
         self.temp_manager = TempFileManager()
         self.dist_tresh = config['DIST_TRESH']
         self.face_det_tresh = config['DET_TRESH']
-        self.conn = self.create_db(config['DB_NAME'])
+        self.conn = self.create_db('storage.db')
 
     def __call__(self, clip, video_file_path, voice_segments):
         scenes = self.detect_scenes(video_file_path)
