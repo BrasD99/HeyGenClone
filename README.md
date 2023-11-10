@@ -56,7 +56,7 @@ Albanian, Amharic, Arabic, Armenian, Azerbaijani, Basque, Bengali, Bulgarian, Ca
 ```
 At the root of the project there is a translate script that translates the video you set.
 - video_filename - the filename of your input video (.mp4)
-- output_language - the code of the language to be translated into (you can also find it [here](https://github.com/BrasD99/HeyGenClone/blob/main/core/mapper.py))
+- output_language - the language to be translated into. Provided [here](https://github.com/BrasD99/HeyGenClone#supported-languages-) (you can also find it in my [code](https://github.com/BrasD99/HeyGenClone/blob/main/core/mapper.py))
 - output_filename - the filename of output video (.mp4)
 ```
 python translate.py video_filename output_language -o output_filename
