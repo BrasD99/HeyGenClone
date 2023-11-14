@@ -1,7 +1,7 @@
 <h1 align="center">HeyGenClone</h1>
 
 <p>
-  Welcome to <strong>HeyGenClone</strong>, an open-source analogue of the HeyGen system.
+  Welcome to the <strong>HeyGenClone</strong>, an open-source analogue of the HeyGen system.
 </p>
 
 <p>
