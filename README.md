@@ -88,8 +88,10 @@ Note that this example was created without GFPGAN usage!
 |     :---:      |     :---:     |     :---:      |
 |🇷🇺 (Russian)     | [![Watch the video](https://i.ibb.co/KD2KKnj/en.jpg)](https://youtu.be/eGFLPAQAC2Y)    | [![Watch the video](https://i.ibb.co/cbwCy8F/ru.jpg)](https://youtu.be/L2YTmfIr7aI)    |
 
-## Contributing 🫵🏻
-Contributions are welcomed! I am very glad that so many people are interested in my project. I will be happy to see the pull requests. In the future, all contributors will be included in the list that will be displayed here!
+## Contributors 🫵🏻
+<a href="https://github.com/BrasD99/HeyGenClone/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=BrasD99/HeyGenClone" />
+</a>
 
 ## To-Do List 🤷🏼‍♂️
 - [ ] Fully GPU support
