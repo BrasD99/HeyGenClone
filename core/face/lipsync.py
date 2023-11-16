@@ -161,7 +161,7 @@ class LipSync:
                 pred = self.model(mel_batch, img_batch)
 
             pred = pred.cuda() if self.device == 'cuda' else pred.cpu()
-            pred = pred.numpy().transpose(0, 2, 3, 1) * 255.
+            pred = pred.cpu().numpy().transpose(0, 2, 3, 1) * 255.
 
             for p, f, c, i in zip(pred, frames, coords, frame_ids):
                 [x1, y1, w, h] = c
