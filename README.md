@@ -43,7 +43,7 @@
 |     USE_ENHANCER      |     Do we need to improve faces using GFPGAN?     |
 
 ## Supported languages 🙂
-Albanian, Amharic, Arabic, Armenian, Azerbaijani, Basque, Bengali, Bulgarian, Catalan, Cebuano, Chichewa, Chinese, Dutch, English, Finnish, French, German, Greek, Gujarati, Haitian creole, Hausa, Hebrew, Hindi, Hungarian, Icelandic, Indonesian, Javanese, Kannada, Kazakh, Khmer, Korean, Kyrgyz, Lao, Latin, Latvian, Malagasy, Malay, Malayalam, Marathi, Mongolian, Odia, Persian, Polish, Portuguese, Punjabi, Romanian, Russian, Samoan, Shona, Somali, Spanish, Swahili, Swedish, Tajik, Tamil, Telugu, Thai, Turkish, Ukrainian, Vietnamese, Welsh, Yoruba
+English (en), Spanish (es), French (fr), German (de), Italian (it), Portuguese (pt), Polish (pl), Turkish (tr), Russian (ru), Dutch (nl), Czech (cs), Arabic (ar), Chinese (zh-cn), Japanese (ja), Hungarian (hu) and Korean (ko)
 
 ## Usage 🤩
 - Activate your environment:

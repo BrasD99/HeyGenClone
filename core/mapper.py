@@ -1,148 +1,33 @@
 DEFAULT_VIDEO_LANGS = ['en']
 
-tts_dict = {
-    'albanian': 'sqi',
-    'amharic': 'amh',
-    'arabic': 'ara',
-    'armenian': 'hyw',
-    'azerbaijani': 'azb',
-    'basque': 'eus',
-    'bengali': 'ben',
-    'bulgarian': 'bul',
-    'catalan': 'cat',
-    'cebuano': 'ceb',
-    'chichewa': 'nya',
-    'chinese': 'hak',
-    'dutch': 'nld',
-    'english': 'eng',
-    'finnish': 'fin',
-    'french': 'fra',
-    'german': 'deu',
-    'greek': 'ell',
-    'gujarati': 'guj',
-    'haitian creole': 'hat',
-    'hausa': 'hau',
-    'hebrew': 'heb',
-    'hindi': 'hin',
-    'hungarian': 'hun',
-    'icelandic': 'isl',
-    'indonesian': 'ind',
-    'javanese': 'jav',
-    'kannada': 'kan',
-    'kazakh': 'kaz',
-    'khmer': 'khm',
-    'korean': 'kor',
-    'kyrgyz': 'kir',
-    'lao': 'lao',
-    'latin': 'lat',
-    'latvian': 'lav',
-    'malagasy': 'mlg',
-    'malay': 'zlm',
-    'malayalam': 'mal',
-    'marathi': 'mar',
-    'mongolian': 'mon',
-    'odia': 'ory',
-    'persian': 'fas',
-    'polish': 'pol',
-    'portuguese': 'por',
-    'punjabi': 'pan',
-    'romanian': 'ron',
-    'russian': 'rus',
-    'samoan': 'smo',
-    'shona': 'sna',
-    'somali': 'som',
-    'spanish': 'spa',
-    'swahili': 'swh',
-    'swedish': 'swe',
-    'tajik': 'tgk',
-    'tamil': 'tam',
-    'telugu': 'tel',
-    'thai': 'tha',
-    'turkish': 'tur',
-    'ukrainian': 'ukr',
-    'vietnamese': 'vie',
-    'welsh': 'cym',
-    'yoruba': 'yor'
-}
 
-trans_dict = {
-    'albanian': 'sq',
-    'amharic': 'am',
-    'arabic': 'ar',
-    'armenian': 'hy',
-    'azerbaijani': 'az',
-    'basque': 'eu',
-    'bengali': 'bn',
-    'bulgarian': 'bg',
-    'catalan': 'ca',
-    'cebuano': 'ceb',
-    'chichewa': 'ny',
-    'chinese': 'zh-tw',
-    'dutch': 'nl',
+mapper = {
     'english': 'en',
-    'finnish': 'fi',
+    'spanish': 'es',
     'french': 'fr',
     'german': 'de',
-    'greek': 'el',
-    'gujarati': 'gu',
-    'haitian creole': 'ht',
-    'hausa': 'ha',
-    'hebrew': 'he',
-    'hindi': 'hi',
-    'hungarian': 'hu',
-    'icelandic': 'is',
-    'indonesian': 'id',
-    'javanese': 'jw',
-    'kannada': 'kn',
-    'kazakh': 'kk',
-    'khmer': 'km',
-    'korean': 'ko',
-    'kyrgyz': 'ky',
-    'lao': 'lo',
-    'latin': 'la',
-    'latvian': 'lv',
-    'malagasy': 'mg',
-    'malay': 'ms',
-    'malayalam': 'ml',
-    'marathi': 'mr',
-    'mongolian': 'mn',
-    'odia': 'or',
-    'persian': 'fa',
-    'polish': 'pl',
+    'italian': 'it',
     'portuguese': 'pt',
-    'punjabi': 'pa',
-    'romanian': 'ro',
-    'russian': 'ru',
-    'samoan': 'sm',
-    'shona': 'sn',
-    'somali': 'so',
-    'spanish': 'es',
-    'swahili': 'sw',
-    'swedish': 'sv',
-    'tajik': 'tg',
-    'tamil': 'ta',
-    'telugu': 'te',
-    'thai': 'th',
+    'polish': 'pl',
     'turkish': 'tr',
-    'ukrainian': 'uk',
-    'vietnamese': 'vi',
-    'welsh': 'cy',
-    'yoruba': 'yo'
+    'russian': 'ru',
+    'dutch': 'nl',
+    'czech': 'cs',
+    'arabic': 'ar',
+    'chinese': 'zh-cn',
+    'japanese': 'ja',
+    'hungarian': 'hu',
+    'korean': 'ko'
 }
 
 
 def get_languages():
-    return list(trans_dict.keys())
+    return list(mapper.keys())
 
 
 def is_valid_lang(language):
     languages = get_languages()
     return language.lower() in languages
 
-
-def map_to_tts(code):
-    return tts_dict[code.lower()]
-
-
-def map_to_trans(code):
-    return trans_dict[code.lower()]
+def map(language):
+    return mapper[language]

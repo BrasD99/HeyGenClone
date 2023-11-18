@@ -1,5 +1,5 @@
 from googletrans import Translator
-from core.mapper import map_to_trans
+from core.mapper import map
 
 
 class TextHelper:
@@ -8,5 +8,5 @@ class TextHelper:
 
     def translate(self, text, src_lang, dst_lang):
         output = self.translator.translate(
-            text, src=src_lang, dest=map_to_trans(dst_lang))
+            text, src=src_lang, dest=map(dst_lang))
         return output.text
