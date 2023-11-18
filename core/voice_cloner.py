@@ -7,8 +7,7 @@ import torch
 class VoiceCloner:
     def __init__(self, lang):
         self.lang_code = map(lang)
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
+        self.tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=torch.cuda.is_available())
 
     def process(self, speaker_wav_filename, text, out_filename=None):
         temp_manager = TempFileManager()
