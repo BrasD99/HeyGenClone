@@ -164,7 +164,7 @@ class Predictor:
                         + _ort.run(None,
                                    {'input': spek.cpu().numpy()})[0] * 0.5
                     )
-                    tar_waves = model.istft(torch.tensor(spec_pred))
+                    tar_waves = model.istft(torch.tensor(spec_pred).to(self.device)).cpu()
                 else:
                     input_data = spek.cuda().numpy() if self.device.type == 'cuda' else spek.cpu().numpy()
                     tar_waves = model.istft(

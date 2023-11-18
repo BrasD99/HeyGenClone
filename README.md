@@ -1,7 +1,7 @@
 <h1 align="center">HeyGenClone</h1>
 
 <p>
-  Welcome to <strong>HeyGenClone</strong>, an open-source analogue of the HeyGen system.
+  Welcome to the <strong>HeyGenClone</strong>, an open-source analogue of the HeyGen system.
 </p>
 
 <p>
@@ -28,7 +28,7 @@
 - Install requirements:
   ```
   cd path_to_project
-  python install.py
+  sh install.sh
   ```
 - In config.json file change HF_TOKEN argument. It is your HuggingFace token. Visit [speaker-diarization](https://hf.co/pyannote/speaker-diarization), [segmentation](https://hf.co/pyannote/segmentation) and accept user conditions
 - Download weights from [drive](https://drive.google.com/file/d/1dYy24q_67TmVuv_PbChe2t1zpNYJci1J/view?usp=sharing), unzip downloaded file into <strong>weights</strong> folder
@@ -88,8 +88,10 @@ Note that this example was created without GFPGAN usage!
 |     :---:      |     :---:     |     :---:      |
 |🇷🇺 (Russian)     | [![Watch the video](https://i.ibb.co/KD2KKnj/en.jpg)](https://youtu.be/eGFLPAQAC2Y)    | [![Watch the video](https://i.ibb.co/cbwCy8F/ru.jpg)](https://youtu.be/L2YTmfIr7aI)    |
 
-## Contributing 🫵🏻
-Contributions are welcomed! I am very glad that so many people are interested in my project. I will be happy to see the pull requests. In the future, all contributors will be included in the list that will be displayed here!
+## Contributors 🫵🏻
+<a href="https://github.com/BrasD99/HeyGenClone/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=BrasD99/HeyGenClone" />
+</a>
 
 ## To-Do List 🤷🏼‍♂️
 - [ ] Fully GPU support
