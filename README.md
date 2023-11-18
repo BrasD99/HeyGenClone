@@ -41,6 +41,7 @@
 |     DIST_TRESH      |     Face embeddings distance treshtold [0.0:1.0]     |
 |     HF_TOKEN      |     Your HuggingFace token (see [Installation](https://github.com/BrasD99/HeyGenClone/tree/main#installation))     |
 |     USE_ENHANCER      |     Do we need to improve faces using GFPGAN?     |
+|     ADD_SUBTITLES      |     Subtitles in the output video     |
 
 ## Supported languages 🙂
 English (en), Spanish (es), French (fr), German (de), Italian (it), Portuguese (pt), Polish (pl), Turkish (tr), Russian (ru), Dutch (nl), Czech (cs), Arabic (ar), Chinese (zh-cn), Japanese (ja), Hungarian (hu) and Korean (ko)

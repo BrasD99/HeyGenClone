@@ -5,6 +5,10 @@ from core.temp_manager import TempFileManager
 from pydub import AudioSegment
 from collections import Counter
 
+FONT = cv2.FONT_HERSHEY_COMPLEX
+FONT_SCALE = 1
+FONT_COLOR = (255, 255, 255)
+LINE_THICKNESS = 2
 
 def get_duration(filename):
     command = f'ffprobe -i {filename} -show_entries format=duration -v quiet -print_format json'
@@ -49,13 +53,17 @@ def to_avi(frames, fps):
     frame_h, frame_w = frames[first_frame]['frame'].shape[:-1]
 
     out = cv2.VideoWriter(
-        temp_result_avi, cv2.VideoWriter_fourcc(
-            *'DIVX'), fps, (frame_w, frame_h)
+        temp_result_avi, cv2.VideoWriter_fourcc(*'DIVX'), fps, (frame_w, frame_h)
     )
 
     for frame in frames.values():
-        frame = cv2.cvtColor(frame['frame'], cv2.COLOR_BGR2RGB)
-        out.write(frame)
+        result = cv2.cvtColor(frame['frame'], cv2.COLOR_BGR2RGB)
+        if frame['text']:
+            text_size, _ = cv2.getTextSize(frame['text'], FONT, FONT_SCALE, LINE_THICKNESS)
+            text_x = (result.shape[1] - text_size[0]) // 2
+            text_y = result.shape[0] - 20
+            cv2.putText(result, frame['text'], (text_x, text_y), FONT, FONT_SCALE, FONT_COLOR, LINE_THICKNESS)
+        out.write(result)
     out.release()
 
     return temp_result_avi
@@ -76,6 +84,7 @@ def to_extended_frames(frames, speakers, fps, get_face_on_frame):
         person_id = find_person_id(frame_id, speakers, fps)
         extended_frames[frame_id] = {
             'frame': frame_dict['frame'],
+            'text': frame_dict['text'],
             'has_face': False
         }
         if person_id:
@@ -148,3 +157,10 @@ def to_segments(updates, audio_duration):
         prev_end = end
 
     return segments
+
+def get_text(speakers, frame_num, fps):
+    seconds = frame_num / fps
+    for speaker in speakers:
+        if speaker['start'] <= seconds and speaker['end'] >= seconds:
+            return speaker['text']
+    return None

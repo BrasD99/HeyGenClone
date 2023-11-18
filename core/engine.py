@@ -9,7 +9,8 @@ from core.helpers import (
     merge,
     merge_voices,
     find_speaker,
-    get_voice_segments
+    get_voice_segments,
+    get_text
 )
 from core.mapper import DEFAULT_VIDEO_LANGS, is_valid_lang
 from core.translator import TextHelper
@@ -47,6 +48,7 @@ class Engine:
         self.lip_sync = LipSync()
         self.dereverb = MDXNetDereverb(15)
         self.use_enhancer = config['USE_ENHANCER']
+        self.add_subtitles = config['ADD_SUBTITLES']
 
     def __call__(self, video_file_path, output_file_path):
         # [Step 1] Reading the video, getting audio (voice + noise), as well as the text of the voice -------
@@ -135,6 +137,8 @@ class Engine:
                 'end': speaker['end'] * 1000,
                 'voice': output_wav
             })
+
+            speaker['text'] = dst_text
         # ---------------------------------------------------------------------------------------------------
 
         # [Step 5] Creating final speech audio --------------------------------------------------------------
@@ -162,7 +166,8 @@ class Engine:
         for frame_id, frame in all_frames.items():
             if not frame_id in frames:
                 frames[frame_id] = {
-                    'frame': np.array(frame)
+                    'frame': np.array(frame),
+                    'text': get_text(speakers, frame_id, orig_clip.fps) if self.add_subtitles else None
                 }
 
         frames = to_extended_frames(

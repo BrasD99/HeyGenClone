@@ -2,5 +2,6 @@
     "DET_TRESH": 0.3,
     "DIST_TRESH": 0.2,
     "HF_TOKEN": "",
-    "USE_ENHANCER": false
+    "USE_ENHANCER": false,
+    "ADD_SUBTITLES": true
 }
