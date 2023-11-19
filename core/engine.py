@@ -118,18 +118,12 @@ class Engine:
             dst_text = self.text_helper.translate(
                 speaker['text'], src_lang=lang, dst_lang=self.output_language)
 
-            cloned_wav = self.cloner.process(
-                speaker_wav_filename=voice_wav,
-                text=dst_text
-            )
-
-            sub_voice = voice_audio[speaker['start']
-                                    * 1000: speaker['end'] * 1000]
+            sub_voice = voice_audio[speaker['start'] * 1000: speaker['end'] * 1000]
             sub_voice_wav = self.temp_manager.create_temp_file(
                 suffix='.wav').name
             sub_voice.export(sub_voice_wav, format='wav')
 
-            output_wav = speedup_audio(cloned_wav, sub_voice_wav)
+            output_wav = speedup_audio(self.cloner, dst_text, sub_voice_wav)
 
             updates.append({
                 # In ms

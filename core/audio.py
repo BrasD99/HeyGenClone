@@ -38,34 +38,33 @@ def speed_change(sound, speed=1.0):
     return sound_with_altered_frame_rate.set_frame_rate(sound.frame_rate)
 
 
-def speedup_audio(src_audio_filename, dst_audio_filename):
-    src = AudioSegment.from_file(src_audio_filename)
+def speedup_audio(cloner, dst_text, dst_audio_filename):
     dst = AudioSegment.from_file(dst_audio_filename)
-
-    src_duration = src.duration_seconds
     dst_duration = dst.duration_seconds
 
-    src_chunks = split_on_silence(src, min_silence_len=500, silence_thresh=-40)
-    chunks_duration = sum(chunk.duration_seconds for chunk in src_chunks)
-    audio = AudioSegment.silent(duration=0)
+    cloned_wav = cloner.process(
+        speaker_wav_filename=dst_audio_filename,
+        text=dst_text
+    )
+    non_speed_voice = AudioSegment.from_file(cloned_wav)
+    non_speed_voice_duration = non_speed_voice.duration_seconds
 
-    if dst_duration >= src_duration:
-        silence_interval = (dst_duration - chunks_duration) / len(src_chunks)
-    else:
-        silence_interval = (src_duration - chunks_duration) / len(src_chunks) * 0.1
-    
-    for chunk in src_chunks:
-        audio += chunk
-        audio += AudioSegment.silent(duration=silence_interval * 1000)
+    speed = non_speed_voice_duration / dst_duration
+
+    cloned_wav = cloner.process(
+        speaker_wav_filename=dst_audio_filename,
+        text=dst_text,
+        speed=speed
+    )
+    speed_voice = AudioSegment.from_file(cloned_wav)
+    speed_voice_duration = speed_voice.duration_seconds
+
+    ratio = dst_duration / speed_voice_duration
 
     temp_manager = TempFileManager()
     temp_file = temp_manager.create_temp_file(suffix='.wav').name
-    audio_file = temp_manager.create_temp_file(suffix='.wav').name
-    audio.export(audio_file, format='wav')
 
-    ratio = dst_duration / audio.duration_seconds
-
-    stretch_audio(audio_file, temp_file, ratio=ratio)
+    stretch_audio(cloned_wav, temp_file, ratio=ratio)
 
     stretched_audio = AudioSegment.from_file(temp_file)
     cropped_audio = stretched_audio[:dst_duration * 1000]
