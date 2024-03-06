@@ -1,3 +1,7 @@
+import faulthandler
+faulthandler.enable()
+
+
 import argparse
 import json
 from core.engine import Engine

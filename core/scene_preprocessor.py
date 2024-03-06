@@ -7,7 +7,7 @@ from core.face.detector import FaceDetector
 from core.temp_manager import TempFileManager
 from core.dereverb import MDXNetDereverb
 from deepface import DeepFace
-from deepface.commons import distance as dst
+from deepface.modules import verification as dst
 from pydub import AudioSegment
 import sqlite3
 import uuid
