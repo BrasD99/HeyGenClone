@@ -1,7 +1,7 @@
 {
     "DET_TRESH": 0.3,
     "DIST_TRESH": 0.2,
-    "HF_TOKEN": "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",
+    "HF_TOKEN": "",
     "USE_ENHANCER": false,
     "ADD_SUBTITLES": true
 }
