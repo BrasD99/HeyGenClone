@@ -1,3 +1,5 @@
+.gitignore
+
 weights/wav2lip_gan.pth
 weights/yolov8n-face.pt
 weights/onnx_dereverb_By_FoxJoy/vocals.onnx
@@ -167,3 +169,7 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+
+# MacOs Finder
+.DS_Store
