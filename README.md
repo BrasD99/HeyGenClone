@@ -1,5 +1,7 @@
 <h1 align="center">HeyGenClone</h1>
 
+<h2>The project is no longer supported.</h2>
+
 <p>
   Welcome to the <strong>HeyGenClone</strong>, an open-source analogue of the HeyGen system.
 </p>
