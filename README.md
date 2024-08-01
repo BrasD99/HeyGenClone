@@ -18,10 +18,6 @@
   <img src="https://i.ibb.co/N2w50HD/corgi.jpg" width="100%" height="auto" />
 </p>
 
-<a href="https://t.me/heygenclone" target="_blank">
-  <img src="https://i.ibb.co/1rhq3V7/tg.png" width="8%" height="auto" />
-</a>
-
 ## Installation 🥸
 - Clone this repo
 - Install [conda](https://conda.io/projects/conda/en/latest/user-guide/install/)
